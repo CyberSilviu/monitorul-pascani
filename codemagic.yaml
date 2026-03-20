@@ -1,0 +1,37 @@
+workflows:
+  ios-workflow:
+    name: iOS - MonitorulPascani
+    max_build_duration: 60
+    environment:
+      node: 18
+      xcode: latest
+      cocoapods: default
+    scripts:
+      - name: Install Node dependencies
+        script: npm install
+      - name: Add iOS platform
+        script: |
+          if [ ! -d "ios" ]; then
+            npx cap add ios
+          fi
+      - name: Capacitor sync
+        script: npx cap sync ios
+      - name: Install CocoaPods
+        script: cd ios/App && pod install
+      - name: Build IPA (no signing)
+        script: |
+          xcodebuild \
+            -workspace ios/App/App.xcworkspace \
+            -scheme App \
+            -configuration Release \
+            -sdk iphoneos \
+            -archivePath "$CM_BUILD_DIR/App.xcarchive" \
+            CODE_SIGNING_ALLOWED=NO \
+            archive
+          mkdir -p "$CM_BUILD_DIR/ipa/Payload"
+          cp -r "$CM_BUILD_DIR/App.xcarchive/Products/Applications/App.app" \
+            "$CM_BUILD_DIR/ipa/Payload/App.app"
+          cd "$CM_BUILD_DIR/ipa"
+          zip -r "$CM_BUILD_DIR/MonitorulPascani.ipa" Payload
+    artifacts:
+      - $CM_BUILD_DIR/MonitorulPascani.ipa
