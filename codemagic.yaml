@@ -3,7 +3,7 @@ workflows:
     name: iOS - MonitorulPascani
     max_build_duration: 60
     environment:
-      node: 18
+      node: 22
       xcode: latest
       cocoapods: default
     scripts:
