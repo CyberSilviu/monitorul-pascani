@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="ro"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover">
+<title>Monitorul Investitiilor - Municipiul Pascani</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#f5f3ef;--cd:#fff;--ac:#2563eb;--al:#dbeafe;--tx:#1e293b;--tm:#64748b;--bd:#e2e8f0;--g:#16a34a;--y:#d97706;--r:#dc2626;--p:#7c3aed;--sat:env(safe-area-inset-top,0px)}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--tx);height:100vh;overflow:hidden}
+.hd{position:fixed;top:0;left:0;right:0;z-index:1000;background:var(--cd);border-bottom:1px solid var(--bd);padding:calc(8px + var(--sat)) 16px 8px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 1px 3px rgba(0,0,0,.08)}
+.hd-l{display:flex;align-items:center;gap:10px}
+.logo{width:36px;height:36px;display:flex;align-items:center;justify-content:center;font-size:28px}
+.hd h1{font-family:'Playfair Display',serif;font-size:17px;font-weight:700}.hd h1 span{color:var(--ac)}
+.hd-sub{font-size:9px;color:var(--tm);font-weight:500;letter-spacing:.5px;text-transform:uppercase}
+.tabs{display:flex;background:var(--bg);border-radius:8px;border:1px solid var(--bd);overflow:hidden}
+.tab{padding:5px 12px;font-size:11px;font-weight:600;cursor:pointer;border:none;background:transparent;color:var(--tm);font-family:inherit;transition:.2s}
+.tab.on{background:var(--ac);color:#fff}
+.pill{background:var(--bg);border:1px solid var(--bd);border-radius:16px;padding:3px 10px;font-size:10px;font-weight:600;color:var(--tm)}
+.sb{position:fixed;top:var(--hh,calc(52px + var(--sat)));left:0;bottom:0;width:370px;z-index:900;background:rgba(255,255,255,.97);backdrop-filter:blur(20px);border-right:1px solid var(--bd);overflow-y:auto;transition:transform .3s}
+.sb.hid{transform:translateX(-370px)}
+.sbt{position:fixed;top:calc(var(--hh,calc(52px + var(--sat))) + 12px);left:370px;z-index:901;width:24px;height:40px;background:var(--cd);border:1px solid var(--bd);border-left:none;border-radius:0 6px 6px 0;color:var(--tm);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:11px;transition:left .3s}
+.sb.hid+.sbt{left:0}
+.bb{padding:12px 14px;border-bottom:1px solid var(--bd);background:linear-gradient(135deg,#eff6ff,#f5f3ff)}
+.bb h3{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--ac);margin-bottom:6px}
+.bgr{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px}
+.bc{background:var(--cd);border-radius:8px;padding:8px;border:1px solid var(--bd);text-align:center}
+.bc .bl{font-size:8px;font-weight:600;text-transform:uppercase;color:var(--tm);margin-bottom:3px}
+.bc .bv{font-size:14px;font-weight:700}.bc .bs{font-size:8px;color:var(--tm);margin-top:1px}
+.bsrc{font-size:8px;color:var(--tm);margin-top:6px;text-align:right}.bsrc a{color:var(--ac);text-decoration:none}
+.srch{padding:10px 14px;border-bottom:1px solid var(--bd)}.sw{position:relative}
+.sw>span{position:absolute;left:10px;top:50%;transform:translateY(-50%);font-size:12px;color:var(--tm)}
+.sw input{width:100%;padding:8px 10px 8px 30px;background:var(--bg);border:1px solid var(--bd);border-radius:8px;font-family:inherit;font-size:12px;color:var(--tx);outline:none}
+.sw input:focus{border-color:var(--ac)}
+.fs{padding:8px 14px;border-bottom:1px solid var(--bd);display:flex;flex-wrap:wrap;gap:5px}
+.ch{padding:4px 9px;border-radius:16px;font-size:10px;font-weight:600;cursor:pointer;border:1.5px solid var(--bd);background:var(--cd);color:var(--tm);transition:.2s;display:flex;align-items:center;gap:3px;user-select:none}
+.ch.on{border-color:var(--ac);background:var(--al);color:var(--ac)}.ch .cn{font-size:9px;opacity:.7}
+.ls{padding:8px 14px;border-bottom:1px solid var(--bd)}.ls h4{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--tm);margin-bottom:5px}
+.lb{display:flex;align-items:center;gap:7px;width:100%;padding:7px 10px;border-radius:8px;border:1.5px solid var(--bd);background:var(--cd);color:var(--tx);font-family:inherit;font-size:11px;font-weight:600;cursor:pointer;transition:.2s;text-align:left;margin-bottom:4px}
+.lb:hover{background:var(--bg)}.lb.on{border-color:var(--ac);background:var(--al);color:var(--ac)}
+.lb.gi{border-color:var(--g);background:#dcfce7;color:var(--g)}.lb.yi{border-color:var(--y);background:#fef3c7;color:var(--y)}
+.lb .dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}.lb .sub{font-size:9px;font-weight:400;opacity:.7;margin-left:auto}
+.pane{padding:6px 10px}.pane h4{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--tm);padding:6px 2px 3px;display:flex;align-items:center;gap:5px}
+.pi{padding:6px 8px;border-radius:7px;cursor:pointer;transition:background .12s;display:flex;align-items:center;gap:8px}.pi:hover{background:var(--bg)}
+.pi .ic{width:28px;height:28px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0}
+.pi .nm{font-size:11px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:220px}
+.pi .ad{font-size:10px;color:var(--tm);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:220px}
+.ii{padding:9px 10px;border-radius:9px;cursor:pointer;transition:.12s;border:1px solid var(--bd);margin-bottom:5px;background:var(--cd)}
+.ii:hover{border-color:var(--g);background:#f0fdf4}
+.ii .top{display:flex;align-items:flex-start;gap:8px;margin-bottom:5px}
+.ii .iic{width:30px;height:30px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0}
+.ii .cat{font-size:8px;font-weight:600;text-transform:uppercase;letter-spacing:.4px;color:var(--tm)}
+.ii .ttl{font-size:11px;font-weight:700;line-height:1.2}
+.tg{font-size:8px;font-weight:700;padding:2px 7px;border-radius:16px;text-transform:uppercase;letter-spacing:.3px;display:inline-block;margin-right:4px;margin-bottom:3px}
+.tg-f{background:#dcfce7;color:var(--g)}.tg-e{background:#fef3c7;color:var(--y)}.tg-l{background:var(--al);color:var(--ac)}.tg-p{background:#f1f5f9;color:var(--tm)}.tg-i{background:#fee2e2;color:var(--r)}
+.bar{height:3px;background:#e2e8f0;border-radius:2px;margin-top:5px;overflow:hidden}.barf{height:100%;border-radius:2px}
+.barl{display:flex;justify-content:space-between;font-size:8px;color:var(--tm);margin-top:2px}
+.cha{padding:10px 14px;border-bottom:1px solid var(--bd)}.cha h4{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--ac);margin-bottom:8px}
+.cb{display:flex;align-items:center;gap:6px;margin-bottom:4px}.cb .yr{font-size:10px;font-weight:600;width:32px;text-align:right;color:var(--tm)}
+.cb .fill{height:16px;border-radius:3px;min-width:2px;display:flex;align-items:center;padding-left:4px;font-size:8px;font-weight:600;color:#fff;white-space:nowrap;overflow:hidden}
+.cb .vl{font-size:9px;color:var(--tm);margin-left:4px;white-space:nowrap}
+.tiv{padding:10px 14px;border-bottom:1px solid var(--bd)}.tiv h4{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--p);margin-bottom:8px}
+.ir{display:flex;align-items:center;gap:6px;margin-bottom:5px;font-size:10px}.ir .rk{font-weight:700;color:var(--ac);width:16px}
+.ir .in{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.ir .iv{font-weight:700;color:var(--g);white-space:nowrap}
+.stp{padding:10px 14px;border-bottom:1px solid var(--bd)}.stp h4{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--p);margin-bottom:8px}
+.sti{padding:7px 9px;border-radius:8px;cursor:pointer;border:1px solid var(--bd);margin-bottom:4px;background:var(--cd);transition:.12s}
+.sti:hover{border-color:var(--p);background:#f5f3ff}
+.sti .sn{font-size:11px;font-weight:700}.sti .sm{font-size:9px;color:var(--tm);margin-top:2px}
+.sti .sc{display:flex;flex-wrap:wrap;gap:3px;margin-top:4px}
+#map{position:fixed;top:var(--hh,calc(52px + var(--sat)));left:0;right:0;bottom:0;z-index:1}
+.leaflet-popup-content-wrapper{background:var(--cd)!important;color:var(--tx)!important;border-radius:12px!important;box-shadow:0 8px 30px rgba(0,0,0,.12)!important;border:1px solid var(--bd)!important;padding:0!important;min-width:250px}
+.leaflet-popup-content{margin:0!important;font-family:'DM Sans',sans-serif!important}
+.leaflet-popup-tip{background:var(--cd)!important;border:1px solid var(--bd)!important}
+.leaflet-popup-close-button{color:var(--tm)!important;font-size:18px!important;top:5px!important;right:7px!important}
+.ph{padding:12px 14px 8px;border-bottom:1px solid var(--bd)}.pc{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;margin-bottom:2px}
+.pt{font-family:'Playfair Display',serif;font-size:14px;font-weight:700;line-height:1.3}
+.pb{padding:10px 14px}.pr{display:flex;gap:6px;margin-bottom:5px;font-size:11px}.pr .l{color:var(--tm);min-width:65px;flex-shrink:0}.pr .v{font-weight:600}
+.pf{padding:7px 14px 10px;border-top:1px solid var(--bd);display:flex;gap:5px;flex-wrap:wrap}
+.ppb{height:5px;background:#e2e8f0;border-radius:3px;overflow:hidden;margin:6px 0 2px}.ppf{height:100%;border-radius:3px}
+.ppt{display:flex;justify-content:space-between;font-size:9px;color:var(--tm)}
+.custom-marker,.invest-marker,.ac-marker{background:none;border:none}
+.md{width:28px;height:28px;border-radius:50% 50% 50% 4px;transform:rotate(-45deg);display:flex;align-items:center;justify-content:center;box-shadow:0 2px 5px rgba(0,0,0,.25);cursor:pointer;border:2px solid #fff;transition:transform .12s}
+.md:hover{transform:rotate(-45deg) scale(1.15)}.md .em{transform:rotate(45deg);font-size:12px}
+.id{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(0,0,0,.3);cursor:pointer;border:3px solid #fff;position:relative;transition:transform .12s}
+.id:hover{transform:scale(1.12)}.id .em{font-size:14px}
+.id::after{content:'';position:absolute;inset:-5px;border-radius:50%;border:2px solid;opacity:.4;animation:pls 2s ease-out infinite}
+@keyframes pls{0%{transform:scale(1);opacity:.4}100%{transform:scale(1.5);opacity:0}}
+.sf{background:var(--g)}.sf::after{border-color:var(--g)}.se{background:var(--y)}.se::after{border-color:var(--y)}
+.sl{background:var(--ac)}.sl::after{border-color:var(--ac)}.spl{background:#94a3b8}.spl::after{border-color:#94a3b8}
+.si2{background:var(--r)}.si2::after{border-color:var(--r);animation-duration:1s}
+.acd{width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 1px 4px rgba(0,0,0,.3);cursor:pointer;border:2px solid #fff;font-size:10px;transition:transform .12s}
+.acd:hover{transform:scale(1.2)}
+.c-institutie{background:#2563eb}.i-institutie{background:#dbeafe}.c-transport{background:#0891b2}.i-transport{background:#cffafe}
+.c-religie{background:#7c3aed}.i-religie{background:#ede9fe}.c-educatie{background:#d97706}.i-educatie{background:#fef3c7}
+.c-sanatate{background:#dc2626}.i-sanatate{background:#fee2e2}.c-agrement{background:#16a34a}.i-agrement{background:#dcfce7}
+.c-cultura{background:#9333ea}.i-cultura{background:#f3e8ff}.c-comert{background:#ea580c}.i-comert{background:#fff7ed}
+.c-cazare{background:#0d9488}.i-cazare{background:#ccfbf1}.c-finante{background:#4f46e5}.i-finante{background:#e0e7ff}
+.c-urgente{background:#be123c}.i-urgente{background:#ffe4e6}.c-posta{background:#ca8a04}.i-posta{background:#fef9c3}
+.c-restaurant{background:#c2410c}.i-restaurant{background:#fff7ed}.c-farmacie{background:#059669}.i-farmacie{background:#d1fae5}
+.lgd{position:fixed;bottom:14px;left:50%;transform:translateX(-50%);z-index:950;background:var(--cd);border:1px solid var(--bd);border-radius:10px;box-shadow:0 8px 30px rgba(0,0,0,.12);padding:8px 14px;display:none;gap:10px;align-items:center;font-size:10px}
+.lgd.v{display:flex}.lgdi{display:flex;align-items:center;gap:4px;font-weight:600}
+.lgdd{width:9px;height:9px;border-radius:50%;border:1.5px solid #fff;box-shadow:0 1px 2px rgba(0,0,0,.2)}
+.kpi{position:fixed;bottom:14px;right:12px;z-index:950;background:var(--cd);border:1px solid var(--bd);border-radius:12px;box-shadow:0 8px 30px rgba(0,0,0,.12);padding:12px 16px;min-width:200px;display:none;font-size:11px}
+.kpi.v{display:block}.kpi h5{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--g);margin-bottom:8px}
+.kpi .kr{display:flex;justify-content:space-between;margin-bottom:6px}.kpi .kl{color:var(--tm)}.kpi .kv{font-weight:700}
+.kpi .kb{height:4px;background:#e2e8f0;border-radius:2px;margin-top:8px;overflow:hidden}.kpi .kbf{height:100%;border-radius:2px;background:linear-gradient(90deg,var(--g),var(--ac))}
+@media(max-width:768px){.sb{width:300px}.sbt{left:300px}.sb.hid+.sbt{left:0}.pill{display:none}.hd{padding:calc(6px + var(--sat)) 10px 6px;flex-wrap:wrap;gap:4px}.hd-l{gap:6px}.logo{width:30px;height:30px;font-size:14px}.hd h1{font-size:14px}.hd-sub{display:none}.tabs{order:3;width:100%;justify-content:center}.tab{padding:4px 10px;font-size:10px}.lgd{bottom:8px;gap:6px;padding:6px 10px;font-size:8px}.kpi{display:none!important}.bgr{grid-template-columns:1fr}}
+</style></head><body>
+<div class="hd"><div class="hd-l"><div class="logo">🏛️</div><div><h1>Monitorul <span>Pascani</span></h1><div class="hd-sub">Investitia mea &#8226; Smart City &#8226; Colegiul Tehnic Unirea</div></div></div>
+<div style="display:flex;align-items:center;gap:8px"><div class="tabs"><button class="tab on" onclick="setMode('poi')">Locatii</button><button class="tab" onclick="setMode('invest')">Investitii</button><button class="tab" onclick="setMode('ac')">Autorizatii</button></div>
+<div class="pill"><span id="tc">0</span> loc &#8226; <span id="nc">0</span> inv &#8226; <span id="acc">0</span> AC</div></div></div>
+<div class="sb" id="sb">
+<div class="bb"><h3>Buget Municipal Pascani 2025</h3><div class="bgr"><div class="bc"><div class="bl">Venituri</div><div class="bv" style="color:var(--g)">224,0M</div><div class="bs">223.985.197 RON</div></div><div class="bc"><div class="bl">Cheltuieli</div><div class="bv" style="color:var(--ac)">228,3M</div><div class="bs">228.337.371 RON</div></div><div class="bc"><div class="bl">Sold</div><div class="bv" style="color:var(--r)">-4,35M</div><div class="bs">Deficit bugetar</div></div></div><div style="margin-top:8px;padding:8px;background:var(--cd);border-radius:8px;border:1px solid var(--bd);text-align:center"><div style="font-size:8px;font-weight:600;text-transform:uppercase;color:var(--p);margin-bottom:3px">Total autorizatii construire (2020-2026)</div><div style="font-size:14px;font-weight:700;color:var(--p)">319.350.748 RON</div><div style="font-size:10px;color:var(--tm)">62.740.814 EUR &#8226; 57 autorizatii (18 investitori)</div></div><div class="bsrc">Sursa: <a href="https://transparenta.eu/entities/4541360" target="_blank">Transparenta.eu</a> + Autorizatii Primaria Pascani &#8226; CUI 4541360</div></div>
+<div class="srch"><div class="sw"><span>&#128269;</span><input type="text" placeholder="Cauta locatie, investitie, strada..." id="sI" oninput="doRender()"></div></div>
+<div class="fs" id="fl"></div>
+<div class="ls"><h4>Straturi harta</h4>
+<button class="lb on" id="bB" onclick="togB()"><span class="dot" style="background:#2563eb"></span>&#128205; Locatii<span class="sub" id="bBs">0</span></button>
+<button class="lb" id="bI" onclick="togI()"><span class="dot" style="background:#16a34a"></span>&#128176; Investitii publice<span class="sub" id="bIs">Click pt activare</span></button>
+<button class="lb" id="bA" onclick="togA()"><span class="dot" style="background:#7c3aed"></span>&#127959; Autorizatii construire<span class="sub" id="bAs">Click pt activare</span></button>
+<button class="lb" id="bH" onclick="togH()"><span class="dot" style="background:#dc2626"></span>&#128293; Harta caldura<span class="sub" id="bHs">Click pt activare</span></button>
+<button class="lb" id="bS" onclick="togS()"><span class="dot" style="background:#94a3b8"></span>&#128739;&#65039; Strazi<span class="sub" id="bSs">Click pt activare</span></button></div>
+<div class="pane" id="pPoi"></div><div class="pane" id="pInv" style="display:none"></div>
+<div id="pAc" style="display:none"><div class="cha" id="chartArea"></div><div class="tiv" id="topInv"></div><div class="stp" id="stPanel"></div><div class="pane" id="acList"></div></div>
+</div><button class="sbt" id="sBt" onclick="togSb()">&#9664;</button>
+<div id="map"></div><div class="lgd" id="lgd"></div><div class="kpi" id="kpi"></div>
+<script>
+// === DATA ===
+const CAT={institutie:{label:"Institutii",em:"\u{1F3DB}\uFE0F"},transport:{label:"Transport",em:"\u{1F682}"},religie:{label:"Biserici",em:"\u26EA"},educatie:{label:"Educatie",em:"\u{1F393}"},sanatate:{label:"Sanatate",em:"\u{1F3E5}"},agrement:{label:"Parcuri",em:"\u{1F333}"},cultura:{label:"Cultura",em:"\u{1F3AD}"},comert:{label:"Magazine",em:"\u{1F6D2}"},cazare:{label:"Cazare",em:"\u{1F3E8}"},finante:{label:"Banci",em:"\u{1F3E6}"},urgente:{label:"Urgente",em:"\u{1F692}"},posta:{label:"Posta",em:"\u{1F4EE}"},restaurant:{label:"Restaurante",em:"\u{1F37D}\uFE0F"},farmacie:{label:"Farmacii",em:"\u{1F48A}"}};
+const ACC={"Constructii rezidentiale":{"color":"#2563eb","icon":"🏠"},"Retele gaze naturale":{"color":"#ea580c","icon":"🔥"},"Reabilitari / Modernizari":{"color":"#16a34a","icon":"🔨"},"Industrial / Comercial":{"color":"#7c3aed","icon":"🏭"},"Retele electrice / Fotovoltaice":{"color":"#d97706","icon":"⚡"},"Altele":{"color":"#64748b","icon":"📋"},"Extinderi cladiri":{"color":"#0891b2","icon":"🏗️"},"Demolari / Desfiintari":{"color":"#dc2626","icon":"🔴"},"Anexe / Garaje":{"color":"#059669","icon":"🏚️"},"Imprejmuiri":{"color":"#ca8a04","icon":"🧱"},"Infrastructura rutiera":{"color":"#be123c","icon":"🛣️"},"Retele apa / Canalizare":{"color":"#0d9488","icon":"💧"},"Educatie":{"color":"#9333ea","icon":"🎓"}};
+const L_ALL=[
+{n:"Primaria Municipiului Pascani",la:47.24512460,ln:26.72407590,ic:"\u{1F3DB}\uFE0F",c:"institutie",a:"Str. Stefan cel Mare 16",d:{"Program":"L-V 07:30-16:00","Tel":"0232 762 300"}},
+{n:"Gara CFR Pascani",la:47.25688520,ln:26.72402760,ic:"\u{1F682}",c:"transport",a:"Str. Garii 34",d:{"An":"1869","Magistrale":"500 si 600"}},
+{n:"Autogara Intertrans",la:47.25788,ln:26.72242,ic:"\u{1F68C}",c:"transport",a:"Str. Garii 95A",d:{"Program":"06:00-20:00"}},
+{n:"Autogara Sprinter AGM",la:47.25746,ln:26.72201,ic:"\u{1F68C}",c:"transport",a:"Str. 22 Decembrie",d:{"Tip":"Curse maxi-taxi"}},
+{n:"Catedrala Pogorarea Sf. Duh",la:47.24587,ln:26.72444,ic:"\u26EA",c:"religie",a:"Str. Stefan cel Mare",d:{"Tip":"Catedrala ortodoxa"}},
+{n:"Biserica Sfanta Vineri",la:47.25561,ln:26.71859,ic:"\u26EA",c:"religie",a:"Str. Garii 10",d:{"An":"1991-2024"}},
+{n:"Biserica Inaltarea Domnului",la:47.24412,ln:26.72116,ic:"\u26EA",c:"religie",a:"Str. Crinilor 45",d:{"Tip":"Parohie ortodoxa"}},
+{n:"Colegiul National \"M. Sadoveanu\"",la:47.24702890,ln:26.71885760,ic:"\u{1F393}",c:"educatie",a:"Str. Sportului 12",d:{"An":"1919","Tel":"0232 762 637"}},
+{n:"Liceul Teoretic Miron Costin",la:47.25587890,ln:26.72159160,ic:"\u{1F393}",c:"educatie",a:"Str. Garii 11",d:{"Program":"07:00-19:30"}},
+{n:"Colegiul Tehnic CF \"Unirea\"",la:47.25550260,ln:26.72086570,ic:"\u{1F393}",c:"educatie",a:"Str. Ceferistilor 3",d:{"Tel":"0232 760 020"}},
+{n:"Liceul Tehnologic M. Busuioc",la:47.25308,ln:26.72477,ic:"\u{1F393}",c:"educatie",a:"Aleea 22 Decembrie",d:{"Program":"08:00-17:00"}},
+{n:"Scoala Gimn. I. Cantacuzino",la:47.24581,ln:26.72627,ic:"\u{1F4DA}",c:"educatie",a:"Aleea Parcului 21",d:{"Tel":"0232 761 800"}},
+{n:"Scoala Arte si Meserii N. Iorga",la:47.24534,ln:26.72066,ic:"\u{1F4DA}",c:"educatie",a:"Str. Eugen Stamate 2",d:{"Tel":"0232 760 243"}},
+{n:"Gradinita (Aleea Tineretului)",la:47.24879,ln:26.72339,ic:"\u{1F492}",c:"educatie",a:"Aleea Tineretului",d:{"Tip":"Gradinita"}},
+{n:"Spitalul Municipal Pascani",la:47.24368890,ln:26.72555530,ic:"\u{1F3E5}",c:"sanatate",a:"Str. Gradiniței 5",d:{"Program":"Non-stop","Tel":"0232 763 600"}},
+{n:"Parcul Municipal",la:47.24569,ln:26.72872,ic:"\u{1F333}",c:"agrement",a:"Est de centru (lac)",d:{"Acces":"Liber, non-stop"}},
+{n:"Parcul Ioana",la:47.24674,ln:26.72312,ic:"\u{1F333}",c:"agrement",a:"Str. Stefan cel Mare",d:{"Tip":"Loc de joaca copii"}},
+{n:"Parc (Str. Crisan)",la:47.24854,ln:26.71785,ic:"\u{1F333}",c:"agrement",a:"Str. Crisan",d:{"Tip":"Spatiu verde"}},
+{n:"Casa de Cultura Pascani",la:47.24992,ln:26.71974,ic:"\u{1F3AD}",c:"cultura",a:"Str. Moldovei 2",d:{"Tel":"0232 767 054"}},
+{n:"Lidl",la:47.24793,ln:26.71301,ic:"\u{1F6D2}",c:"comert",a:"Str. Moldovei 17",d:{"Program":"L-S 07-22, D 08-20"}},
+{n:"Kaufland",la:47.24837280,ln:26.70816730,ic:"\u{1F6D2}",c:"comert",a:"Str. Moldovei 98",d:{"Program":"L-S 07-22:30"}},
+{n:"Dedeman",la:47.24434,ln:26.71447,ic:"\u{1F3D7}\uFE0F",c:"comert",a:"Str. Gradiniței 11",d:{"Program":"L-V 08-20"}},
+{n:"Profi Super",la:47.24896,ln:26.72049,ic:"\u{1F6D2}",c:"comert",a:"Str. Stefan cel Mare",d:{"Program":"06:00-22:00"}},
+{n:"Profi City",la:47.24573,ln:26.72276,ic:"\u{1F6D2}",c:"comert",a:"Str. Eugen Stamate",d:{"Program":"06:00-22:00"}},
+{n:"Penny (Gradiniței)",la:47.24662,ln:26.71304,ic:"\u{1F6D2}",c:"comert",a:"Str. Gradiniței 25",d:{"Program":"L-S 07:30-22"}},
+{n:"Penny (Garii nord)",la:47.25746,ln:26.72242,ic:"\u{1F6D2}",c:"comert",a:"Str. Garii (nord)",d:{"Program":"L-S 07:30-22"}},
+{n:"Piata Vale",la:47.25635,ln:26.72106,ic:"\u{1F3EA}",c:"comert",a:"Str. Ceferistilor Bl. B29",d:{"Program":"L-S 07-18"}},
+{n:"Hotel Central",la:47.25015,ln:26.72076,ic:"\u{1F3E8}",c:"cazare",a:"Str. Stefan cel Mare",d:{"Tel":"0371 782 404"}},
+{n:"Banca Transilvania",la:47.24929,ln:26.71950,ic:"\u{1F3E6}",c:"finante",a:"Str. Stefan cel Mare Bl. V1",d:{"Program":"L-V 09-17"}},
+{n:"BCR",la:47.24867,ln:26.72220,ic:"\u{1F3E6}",c:"finante",a:"Str. Stefan cel Mare 5",d:{"Program":"L-V 09-17"}},
+{n:"BRD",la:47.25427,ln:26.72443,ic:"\u{1F3E6}",c:"finante",a:"Str. Cuza Voda 16",d:{"Program":"L-V 09-16:45"}},
+{n:"Politia Mun. Pascani",la:47.25165,ln:26.72178,ic:"\u{1F46E}",c:"urgente",a:"Zona centrala",d:{"Program":"Non-stop","Tel":"0232 299 252"}},
+{n:"Sectia de Pompieri (ISU)",la:47.24705,ln:26.73117,ic:"\u{1F692}",c:"urgente",a:"Str. Abator 2",d:{"Program":"Non-stop"}},
+{n:"Oficiul Postal Pascani 1",la:47.24721,ln:26.72384,ic:"\u{1F4EE}",c:"posta",a:"Str. Stefan cel Mare 10",d:{"Program":"L-V 09:30-17:00"}},
+{n:"Oficiul Postal (Garii)",la:47.25617,ln:26.72412,ic:"\u{1F4EE}",c:"posta",a:"Str. Garii 40",d:{"Program":"L-V 09-16:30"}},
+{n:"Trattoria Incanto",la:47.25022,ln:26.71972,ic:"\u{1F37D}\uFE0F",c:"restaurant",a:"Str. Moldovei 2",d:{"Rating":"4.4\u2605"}},
+{n:"A'Roma Ristorante",la:47.24739,ln:26.72426,ic:"\u{1F355}",c:"restaurant",a:"Str. Stefan cel Mare 13",d:{"Rating":"4.4\u2605"}},
+{n:"Pizzeria IzZa",la:47.24929,ln:26.72230,ic:"\u{1F355}",c:"restaurant",a:"Aleea Tineretului 13",d:{"Rating":"4.8\u2605"}},
+{n:"Restaurant CERVO",la:47.24577,ln:26.71486,ic:"\u{1F37D}\uFE0F",c:"restaurant",a:"Str. Gradiniței 25",d:{"Rating":"4.4\u2605"}},
+{n:"Restaurant Pabo",la:47.26154,ln:26.72012,ic:"\u{1F37D}\uFE0F",c:"restaurant",a:"Str. Garii 40",d:{"Rating":"4.5\u2605"}},
+{n:"Farmacia DONA (centru)",la:47.24847,ln:26.72144,ic:"\u{1F48A}",c:"farmacie",a:"Str. Stefan cel Mare 6",d:{"Program":"L-V 07:30-20:30"}},
+{n:"Farmacia DONA (Vale)",la:47.25351,ln:26.72326,ic:"\u{1F48A}",c:"farmacie",a:"Str. Cuza Voda 9",d:{"Program":"L-V 08-20"}},
+{n:"Farmacia Dr. Max",la:47.24869,ln:26.72097,ic:"\u{1F48A}",c:"farmacie",a:"Str. Stefan cel Mare Bl.A6",d:{"Program":"L-V 08-20"}},
+{n:"Ropharma Centrala",la:47.24756,ln:26.72303,ic:"\u{1F48A}",c:"farmacie",a:"Str. Stefan cel Mare A4",d:{"Program":"L-V 08-20"}},
+{n:"Farmacia Galemih (Non-stop)",la:47.25716,ln:26.72386,ic:"\u{1F48A}",c:"farmacie",a:"Bloc G5, zona Vale",d:{"Program":"NON-STOP"}}
+];
+const INV=[
+// 1. Transport public - contract semnat 23.10.2025 cod SMIS 341049
+{id:"INV-2025-001",n:"Modernizare transport public local (19 strazi, 60 statii smart, ITS)",cat:"Transport Public",ic:"\u{1F68D}",
+ la:47.24512460,ln:26.72407590, // centrul orasului - Str. Stefan cel Mare
+ buget:49491680,platit:2500000,sursa:"PR Nord-Est (FEDR 35,9M + BN 5,5M + cofin. 0,8M)",
+ stadiu:"executie",progres:5,start:"oct 2025",termen:"ian 2028",cartier:"Multi-cartier (19 strazi)",
+ desc:"Refacerea infrastructurii rutiere pe 19 strazi, 2 sensuri giratorii, 60 statii autobuz cu panouri fotovoltaice/LED, prioritate la semafoare pt autobuze. Cod SMIS 341049, contract nr. 770.",
+ a:"Str. Stefan cel Mare / Multiple strazi"},
+// 2. Palatul Cantacuzino - reabilitare PR Nord-Est cod SMIS 326813
+{id:"INV-2022-002",n:"Reabilitare Palatul Cantacuzino-Pascanu si teren aferent",cat:"Patrimoniu Cultural",ic:"\u{1F3F0}",
+ la:47.24519040,ln:26.72785050, // Palatul Cantacuzino-Pascanu - Aleea Parcului
+ buget:12000000,platit:7800000,sursa:"PR Nord-Est 2021-2027",
+ stadiu:"intarziat",progres:65,start:"2022",termen:"2028 (prelungit +2 ani)",cartier:"Centru - Aleea Parcului",
+ desc:"Restaurare corp C1 (palat) si C2 (anexa), amenajare teren: alei, spatii verzi, fantana arteziana, foișor, iluminat arhitectural. Contract reziliat oct.2025, relicitat apr.2026. Stadiu fizic ~65%, acoperis finalizat.",
+ a:"Aleea Parcului / Str. Gradiniței"},
+// 3. Lac Pestisorul - agrement
+{id:"INV-2025-003",n:"Amenajare zona agrement Lacul Pestisorul",cat:"Spatii Verzi / Agrement",ic:"\u{1F3DE}\uFE0F",
+ la:47.24552060,ln:26.72974940, // Lacul Pestisorul - OSM verified
+ buget:51000000,platit:0,sursa:"Fonduri UE (35,5M) + cofin. locala (16,5M)",
+ stadiu:"licitatie",progres:0,start:"2026 (dupa licitatie)",termen:"2029",cartier:"Est - Lac Pestisorul",
+ desc:"Suprafata 25.744 mp: lac amenajat, skatepark, parc aventura, cladire multifunctionala, pontoane, barcute, locuri joaca, zone picnic, alei pietonale, piste ciclabile. Aprobat ADR Nord-Est dec.2025, autorizatie construire obtinuta.",
+ a:"Zona Lac Pestisorul (est oras)"},
+// 4. Autobuze electrice PNRR + ADI Transport Metropolitan
+{id:"INV-2024-004",n:"Achizitie 6 autobuze electrice + traseu metropolitan",cat:"Transport Electric",ic:"\u{1F68C}",
+ la:47.25688520,ln:26.72402760, // zona Gara / autogari - OSM verified
+ buget:8000000,platit:3200000,sursa:"PNRR",
+ stadiu:"executie",progres:40,start:"2024",termen:"2026",cartier:"Traseu Pascani - Stolniceni-Prajescu",
+ desc:"6 autobuze electrice, traseu metropolitan Pascani-Stolniceni-Prajescu. ADI Transport Metropolitan infiintata prin HCL 27.02.2026. Include statii incarcare.",
+ a:"Str. Garii / Autogara"},
+// 5. E-ticketing transport public PNRR
+{id:"INV-2024-005",n:"Sistem e-ticketing transport public",cat:"Digitalizare Transport",ic:"\u{1F4F3}",
+ la:47.24512460,ln:26.72407590, // zona centrala - Primarie
+ buget:1200000,platit:400000,sursa:"PNRR",
+ stadiu:"executie",progres:35,start:"2024",termen:"2026",cartier:"Oras intreg",
+ desc:"Sistem electronic de ticketing pentru transportul public local. Card electronic inlocuieste biletul de hartie. Proiect confirmat in lista PNRR nov.2025.",
+ a:"Intreg municipiul"},
+// 6. Reabilitare Colegiul National M. Sadoveanu
+{id:"INV-2025-006",n:"Reabilitare Colegiul National M. Sadoveanu",cat:"Educatie",ic:"\u{1F3EB}",
+ la:47.24702890,ln:26.71885760, // coordonatele exacte din POI - OSM verified
+ buget:15000000,platit:0,sursa:"PR Nord-Est 2021-2027",
+ stadiu:"licitatie",progres:0,start:"2026",termen:"2028",cartier:"Centru - Str. Sportului",
+ desc:"Proiect aprobat la finantare de ADR Nord-Est in decembrie 2025. Reabilitare completa a Colegiului National Mihail Sadoveanu.",
+ a:"Str. Sportului 12"},
+// 7. Reabilitare Scoala N. Iorga PNRR
+{id:"INV-2024-007",n:"Reabilitare Scoala N. Iorga (PNRR)",cat:"Educatie",ic:"\u{1F3EB}",
+ la:47.24534000,ln:26.72066000, // coordonatele exacte din POI
+ buget:5500000,platit:2800000,sursa:"PNRR",
+ stadiu:"executie",progres:50,start:"2023",termen:"2026",cartier:"Centru - Str. Eugen Stamate",
+ desc:"Reabilitare termica si modernizare scoala. Confirmat in lista proiectelor PNRR care continua finantarea (nov.2025).",
+ a:"Str. Eugen Stamate 2"},
+// 8. Reabilitare Liceul Miron Costin PNRR
+{id:"INV-2024-008",n:"Reabilitare Liceul Miron Costin (PNRR)",cat:"Educatie",ic:"\u{1F3EB}",
+ la:47.25587890,ln:26.72159160, // coordonatele exacte din POI - OSM verified
+ buget:6000000,platit:3000000,sursa:"PNRR",
+ stadiu:"executie",progres:50,start:"2023",termen:"2026",cartier:"Vale - Str. Garii",
+ desc:"Reabilitare termica si modernizare liceu. Confirmat in lista proiectelor PNRR care continua (nov.2025).",
+ a:"Str. Garii 11"},
+// 9. Reabilitare Colegiul Tehnic CF Unirea PNRR
+{id:"INV-2024-009",n:"Reabilitare Colegiul Tehnic CF Unirea (PNRR)",cat:"Educatie",ic:"\u{1F3EB}",
+ la:47.25550260,ln:26.72086570, // coordonatele exacte din POI - OSM verified
+ buget:5000000,platit:2500000,sursa:"PNRR",
+ stadiu:"executie",progres:50,start:"2023",termen:"2026",cartier:"Vale - Str. Ceferistilor",
+ desc:"Reabilitare termica si modernizare liceu. Confirmat in lista PNRR nov.2025.",
+ a:"Str. Ceferistilor 3"},
+// 10. Reabilitare Scoala Gastesti PNRR
+{id:"INV-2024-010",n:"Reabilitare Scoala Gastesti (PNRR)",cat:"Educatie",ic:"\u{1F3EB}",
+ la:47.24737920,ln:26.66178950, // Sat Gastesti - OSM verified (vest Pascani)
+ buget:3500000,platit:1800000,sursa:"PNRR",
+ stadiu:"executie",progres:50,start:"2023",termen:"2026",cartier:"Gastesti (sat apartin.)",
+ desc:"Reabilitare scoala din satul Gastesti. Confirmat in lista PNRR nov.2025.",
+ a:"Sat Gastesti, Mun. Pascani"},
+// 11. Bloc C38 - eficienta energetica PNRR C5
+{id:"INV-2023-011",n:"Eficienta energetica Bloc C38 (PNRR C5)",cat:"Eficienta Energetica",ic:"\u{1F3E2}",
+ la:47.25327480,ln:26.71896970, // Aleea 1 Decembrie 1918 - OSM verified
+ buget:8500000,platit:1200000,sursa:"PNRR C5",
+ stadiu:"intarziat",progres:14,start:"apr 2023",termen:"dec 2026",cartier:"Aleea 1 Decembrie 1918",
+ desc:"Reabilitare termica bloc C38 nr.19. Licitatie anulata aug.2024, relicitata. Confirmat in lista PNRR continua (nov.2025).",
+ a:"Aleea 1 Decembrie 1918, nr. 19"},
+// 12. Autostrada A7 Ploiesti-Pascani
+{id:"INV-2022-012",n:"Autostrada A7 (Ploiesti-Pascani)",cat:"Infrastructura Nationala",ic:"\u{1F6E3}\uFE0F",
+ la:47.2680,ln:26.6950, // nord-vest periferie Pascani
+ buget:0,platit:0,sursa:"Buget National + Fonduri UE",
+ stadiu:"executie",progres:45,start:"2022",termen:"2030",cartier:"Nord-Vest (periferie)",
+ desc:"Proiect national prioritizat de Min. Finantelor 2025. Drum mare viteza Bacau-Pascani. Include si autostrazile Pascani-Siret si Pascani-Ungheni (finantare SAFE aprobata UE).",
+ a:"Zona Nord-Vest"},
+// 13. Plan Urbanistic General
+{id:"INV-2024-013",n:"Realizare Plan Urbanistic General (PUG)",cat:"Urbanism",ic:"\u{1F4CB}",
+ la:47.24512460,ln:26.72407590, // Primarie - OSM verified
+ buget:800000,platit:300000,sursa:"PNRR",
+ stadiu:"executie",progres:35,start:"2024",termen:"2026",cartier:"Oras intreg",
+ desc:"Actualizare PUG Pascani. Proiect confirmat in lista PNRR nov.2025.",
+ a:"Str. Stefan cel Mare 16 (Primarie)"},
+// 14. Digitalizare servicii publice
+{id:"INV-2024-014",n:"Informatizare administratie publica - servicii online",cat:"Digitalizare",ic:"\u{1F4BB}",
+ la:47.24512460,ln:26.72407590, // Primarie - OSM verified
+ buget:1500000,platit:600000,sursa:"PNRR + fonduri proprii",
+ stadiu:"executie",progres:40,start:"2024",termen:"2026",cartier:"Centru (Primarie)",
+ desc:"Platforma online cereri, plata taxe, programari. Afisaj digital la primarie. Portal info.primariapascani.ro operational.",
+ a:"Str. Stefan cel Mare 16"},
+// 15. Modernizare Parc Municipal
+{id:"INV-2024-015",n:"Modernizare Parc Municipal si zona lacului",cat:"Spatii Verzi",ic:"\u{1F333}",
+ la:47.24569000,ln:26.72872000, // coordonate exacte parc din POI
+ buget:2800000,platit:2100000,sursa:"Buget Local",
+ stadiu:"executie",progres:75,start:"mar 2024",termen:"sept 2025",cartier:"Centru-Est",
+ desc:"Reamenajare alei, iluminat LED, mobilier urban, loc joaca modern, pontoane lac.",
+ a:"Parcul Municipal"},
+// 16. Retea apa si canalizare ApaVital
+{id:"INV-2023-016",n:"Extindere si modernizare retele apa si canalizare",cat:"Utilitati",ic:"\u{1F4A7}",
+ la:47.25587890,ln:26.72159160, // zona Vale - Str. Garii (langa Liceul Miron Costin)
+ buget:13000000,platit:10000000,sursa:"Fonduri UE + ApaVital",
+ stadiu:"executie",progres:78,start:"2023",termen:"2026",cartier:"Vale + alte zone",
+ desc:"Investitie ApaVital ~13M EUR in zona Pascani. Inlocuire conducte, racorduri noi pe multiple strazi.",
+ a:"Zona Vale - Str. Ceferistilor + altele"},
+// 17. Complex rezidential zona A7
+{id:"INV-2025-017",n:"Complex rezidential 7 blocuri (Q3 Residence) - zona A7",cat:"Dezvoltare Urbana",ic:"\u{1F3D7}\uFE0F",
+ la:47.25092390,ln:26.71885270, // Str. Culturii / Gabaret Ibraileanu - OSM verified
+ buget:0,platit:0,sursa:"Investitie privata (AUTO TRANS COM SRL)",
+ stadiu:"planificat",progres:0,start:"2026",termen:"2029",cartier:"Nord - Zona A7",
+ desc:"Complex rezidential 7 blocuri aprobat de CL Pascani. HCL sept.2024 acorda drept uz Delgaz pt alimentare Q3 Residence (str. Gabaret Ibraileanu / Culturii).",
+ a:"Str. Gabaret Ibraileanu / Culturii"},
+// 18. Ansamblu mixt retail
+{id:"INV-2025-018",n:"Ansamblu mixt: parc retail, locuinte, birouri",cat:"Dezvoltare Urbana",ic:"\u{1F3EC}",
+ la:47.24837280,ln:26.70816730, // zona Kaufland vest - OSM verified
+ buget:0,platit:0,sursa:"Investitie privata",
+ stadiu:"planificat",progres:0,start:"2026",termen:"2029",cartier:"Vest - Zona Moldovei",
+ desc:"Ansamblu mixt cu parc retail, locuinte, birouri si servicii. Proiect privat aprobat.",
+ a:"Str. Moldovei (zona Kaufland)"}
+];
+const AC=[{"a":2024,"m":7,"nr":"90","dt":"26.06.2024","v":9010238,"c":"Retele apa / Canalizare","inv":"APAVITAL SA","ds":"Extindere si inlocuire retele distributie apa, gaze naturale si bransamente (3 autorizatii 2022-2024)","ad":"Str. Gradinitei, Str. Stefan cel Mare, Str. Abator","st":"Gradinitei","la":47.2467058,"ln":26.7150545},{"a":2025,"m":11,"nr":"116","dt":"14.11.2025","v":248820,"c":"Altele","inv":"BIROU INDIVIDUAL NOTARIAL CRUCIANU MIHAE","ds":"Construire spatiu arhiva si birouri","ad":"Calea Iasului nr. 11","st":"Calea Iasului","la":47.2421058,"ln":26.7138490},{"a":2025,"m":12,"nr":"127","dt":"12.12.2025","v":179037,"c":"Reabilitari / Modernizari","inv":"COLEGIUL TEHNIC UNIREA","ds":"Reabilitare teren baschet si amplasare containere vestiare (2 autorizatii 2023-2025)","ad":"Str. Ceferistilor nr. 3","st":"Ceferistilor","la":47.2555026,"ln":26.7208657},{"a":2023,"m":2,"nr":"15","dt":"20.02.2023","v":5246785,"c":"Constructii rezidentiale","inv":"DGASPC IASI","ds":"Construire si reabilitare case tip familial si centre de zi (4 autorizatii 2022-2023)","ad":"Str. Ion Creanga nr. 36, Str. Independentei nr. 5A, Str. M. Kogalniceanu nr. 2","st":"Ion Creanga","la":47.2381683,"ln":26.6924790},{"a":2022,"m":6,"nr":"66","dt":"28.06.2022","v":13090335,"c":"Retele gaze naturale","inv":"DELGAZ GRID","ds":"Extindere retele gaze naturale, electrice si modernizare iluminat public (3 autorizatii 2022-2024)","ad":"Str. Gistesti nr. 384, Str. Soseaua Nationala, strazi municipiu","st":"Gistesti","la":47.246785,"ln":26.660905},{"a":2022,"m":6,"nr":"66","dt":"28.06.2022","v":13090335,"c":"Retele gaze naturale","inv":"DELGAZ GRID","ds":"Extindere retele gaze naturale, electrice si modernizare iluminat public (3 autorizatii 2022-2024)","ad":"Str. Gistesti nr. 384, Str. Soseaua Nationala, strazi municipiu","st":"Gistesti","la":47.243943,"ln":26.706801},{"a":2023,"m":7,"nr":"83","dt":"25.07.2023","v":6181477,"c":"Infrastructura rutiera","inv":"DIRECTIA JUDETEANA DE ADMINISTRARE A DRUMURILOR","ds":"Modernizare DJ 208I Blagesti (DN 28A), Crivesti - Vanatori (DJ 204N), km 0+000 - 1+500","ad":"Str. Oituz, Str. Marasesti, Tr. Ripa Galbena","st":"Oituz","la":47.255463,"ln":26.765921},{"a":2024,"m":12,"nr":"161","dt":"13.12.2024","v":578484,"c":"Reabilitari / Modernizari","inv":"LICEUL BUSUIOC","ds":"Reabilitare teren sport","ad":"Aleea 22 Decembrie nr. 2","st":"Aleea 22 Decembrie","la":47.2530800,"ln":26.7247700},{"a":2025,"m":4,"nr":"46","dt":"29.04.2025","v":244350,"c":"Educatie","inv":"LICEUL MIRON COSTIN","ds":"Construire teren multisport","ad":"Str. Izvoarelor nr. 11","st":"Izvoarelor","la":47.2558789,"ln":26.7215916},{"a":2023,"m":6,"nr":"74","dt":"20.06.2023","v":178996582,"c":"Altele","inv":"MUNICIPIUL PASCANI","ds":"Investitii municipale: parcuri, scoli, strazi, cladiri publice (20 autorizatii 2020-2023)","ad":"Str. Izvoarelor, Str. Stefan cel Mare, Str. Ceferistilor si altele","st":"Izvoarelor","la":47.253465,"ln":26.722661},{"a":2022,"m":5,"nr":"36","dt":"02.05.2022","v":22648473,"c":"Industrial / Comercial","inv":"ROMPAK SRL","ds":"Extindere capacitate productie hale industriale, depozite si statii de tratare (4 autorizatii 2022-2023)","ad":"Str. Gradinitei nr. 1C","st":"Gradinitei","la":47.2481859,"ln":26.740479},{"a":2025,"m":2,"nr":"10","dt":"06.02.2025","v":27932871,"c":"Constructii rezidentiale","inv":"AUTO TRANS COM SRL","ds":"Construire si extindere locuinte colective, birouri, spatii comerciale (7 autorizatii 2023-2025)","ad":"Calea Romanului nr. 9, Str. Dragos Voda nr. 15, Str. Culturii nr. 16","st":"Calea Romanului","la":47.2409105,"ln":26.7177484},{"a":2022,"m":8,"nr":"95","dt":"31.08.2022","v":1071748,"c":"Constructii rezidentiale","inv":"BELLA PRAXIS SRL","ds":"Modificare si extindere mansarda, schimbare destinatie in spatiu cu destinatie unitati sanitare","ad":"Str. Nicolae Iorga nr. 30","st":"Nicolae Iorga","la":47.2490738,"ln":26.7225718},{"a":2021,"m":12,"nr":"108","dt":"09.12.2021","v":8988384,"c":"Industrial / Comercial","inv":"INVESTMENT ADH INT SRL","ds":"Construire hala de fabricare produse farmaceutice, sediu administrativ","ad":"Str. Garii nr. 123A","st":"Garii","la":47.2629957,"ln":26.7159729},{"a":2025,"m":6,"nr":"53","dt":"05.06.2025","v":3472411,"c":"Constructii rezidentiale","inv":"DAVID FAST SRL","ds":"Construire locuinte colective si locuinte insirate (2 autorizatii 2023-2025)","ad":"Str. Soseaua Nationala nr. 8, Str. 1 Decembrie nr. 104","st":"Soseaua Nationala","la":47.2403126,"ln":26.7123714},{"a":2023,"m":10,"nr":"122","dt":"20.10.2023","v":24443549,"c":"Industrial / Comercial","inv":"DEDEMAN SRL","ds":"Construire magazin materiale constructii, platforme, parcaje, imprejmuire teren","ad":"Str. Gradinitei nr. 11","st":"Gradinitei","la":47.243027,"ln":26.71437},{"a":2021,"m":5,"nr":"42","dt":"27.05.2021","v":9767742,"c":"Industrial / Comercial","inv":"SMART ESTATE & LOGISTIC SRL","ds":"Amenajare spatiu comercial, recompartimentare, amplasare totem si imprejmuire","ad":"Str. Moldovei nr. 17 BIS","st":"Moldovei","la":47.247147,"ln":26.712167},{"a":2024,"m":7,"nr":"100","dt":"23.07.2024","v":1640662,"c":"Demolari / Desfiintari","inv":"SPITALUL MUNICIPAL PASCANI","ds":"Demolare corp centrala existent, construire si echipare corp centrala termica","ad":"Str. Gradinitei nr. 5","st":"Gradinitei","la":47.2436889,"ln":26.7255553},{"a":2025,"m":12,"nr":"129","dt":"16.12.2025","v":5608800,"c":"Constructii rezidentiale","inv":"VITAL MEDICAL CENTER SRL","ds":"Construire si extindere centru dializa si locuinta (3 autorizatii 2023-2025)","ad":"Str. Vatra nr. 12","st":"Vatra","la":47.2348285,"ln":26.7238291}];
+const ST=[{"s":"Izvoarelor","c":2,"v":179240932,"la":47.2547495,"ln":26.7227959,"cats":{"Altele":1,"Educatie":1}},{"s":"Gradinitei","c":4,"v":57742922,"la":47.2451929,"ln":26.7192211,"cats":{"Retele apa / Canalizare":1,"Industrial / Comercial":2,"Demolari / Desfiintari":1}},{"s":"Calea Romanului","c":1,"v":27932871,"la":47.2397680,"ln":26.7201551,"cats":{"Constructii rezidentiale":1}},{"s":"Gistesti","c":1,"v":13090335,"la":47.2482140,"ln":26.7205070,"cats":{"Retele gaze naturale":1}},{"s":"Moldovei","c":1,"v":9767742,"la":47.2471399,"ln":26.7132651,"cats":{"Industrial / Comercial":1}},{"s":"Garii","c":1,"v":8988384,"la":47.2459549,"ln":26.7302835,"cats":{"Industrial / Comercial":1}},{"s":"Oituz","c":1,"v":6181477,"la":47.2525885,"ln":26.7633029,"cats":{"Infrastructura rutiera":1}},{"s":"Vatra","c":1,"v":5608800,"la":47.2373189,"ln":26.7276555,"cats":{"Constructii rezidentiale":1}},{"s":"Ion Creanga","c":1,"v":5246785,"la":47.2381683,"ln":26.6924790,"cats":{"Constructii rezidentiale":1}},{"s":"Soseaua Nationala","c":1,"v":3472411,"la":47.2403126,"ln":26.7123714,"cats":{"Constructii rezidentiale":1}},{"s":"Nicolae Iorga","c":1,"v":1071748,"la":47.2504047,"ln":26.7210822,"cats":{"Constructii rezidentiale":1}},{"s":"Aleea 22 Decembrie","c":1,"v":578484,"la":47.2530800,"ln":26.7247700,"cats":{"Reabilitari / Modernizari":1}},{"s":"Calea Iasului","c":1,"v":248820,"la":47.2421058,"ln":26.7138490,"cats":{"Altele":1}},{"s":"Ceferistilor","c":1,"v":179037,"la":47.2555026,"ln":26.7208657,"cats":{"Reabilitari / Modernizari":1}}];
+
+
+// === STATE ===
+const aF=new Set(Object.keys(CAT));let mode='poi',bV=true,iV=false,aV=false,hV=false,sV=false;
+const mks=[],iMks=[],aMks=[],hCirc=[];let sLayer=null,sLoaded=false,sData=null;
+const map=L.map('map',{center:[47.2505,26.7210],zoom:15,zoomControl:false});
+L.control.zoom({position:'topright'}).addTo(map);
+L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png',{attribution:'&copy; OSM &copy; CARTO',subdomains:'abcd',maxZoom:19}).addTo(map);
+function fixLayout(){const h=document.querySelector('.hd').offsetHeight;document.documentElement.style.setProperty('--hh',h+'px');map.invalidateSize();}
+setTimeout(fixLayout,100);
+window.addEventListener('resize',fixLayout);
+document.getElementById('tc').textContent=L_ALL.length;
+document.getElementById('nc').textContent=INV.length;
+document.getElementById('acc').textContent=AC.length;
+
+function setMode(m){mode=m;
+document.querySelectorAll('.tab').forEach((t,i)=>t.classList.toggle('on',['poi','invest','ac'][i]===m));
+document.getElementById('fl').style.display=m==='poi'?'flex':'none';
+document.getElementById('pPoi').style.display=m==='poi'?'block':'none';
+document.getElementById('pInv').style.display=m==='invest'?'block':'none';
+document.getElementById('pAc').style.display=m==='ac'?'block':'none';
+if(m==='invest'&&!iV)togI();if(m==='ac'&&!aV)togA();doRender();}
+
+function fR(v){if(!v)return'N/A';if(v>=1e6)return(v/1e6).toFixed(1)+'M';if(v>=1e3)return Math.round(v/1e3)+'K';return v.toLocaleString('ro-RO');}
+function sC(s){return{finalizat:'#16a34a',executie:'#d97706',licitatie:'#2563eb',planificat:'#94a3b8',intarziat:'#dc2626'}[s]||'#94a3b8';}
+function sL(s){return{finalizat:'Finalizat',executie:'In Executie',licitatie:'In Licitatie',planificat:'Planificat',intarziat:'Intarziat'}[s]||s;}
+function sM(s){return{finalizat:'sf',executie:'se',licitatie:'sl',planificat:'spl',intarziat:'si2'}[s]||'spl';}
+function sT(s){return{finalizat:'tg-f',executie:'tg-e',licitatie:'tg-l',planificat:'tg-p',intarziat:'tg-i'}[s]||'tg-p';}
+
+function bFilt(){const el=document.getElementById('fl');el.innerHTML='';const cn={};L_ALL.forEach(l=>cn[l.c]=(cn[l.c]||0)+1);
+for(const[k,v]of Object.entries(CAT)){if(!cn[k])continue;const c=document.createElement('div');c.className='ch'+(aF.has(k)?' on':'');c.dataset.cat=k;
+c.innerHTML=`${v.em} ${v.label} <span class="cn">${cn[k]}</span>`;c.onclick=()=>{if(aF.has(k))aF.delete(k);else aF.add(k);doRender();};el.appendChild(c);}}
+
+function popPoi(l){let r=`<div class="pr"><span class="l">Adresa</span><span class="v">${l.a||'-'}</span></div>`;
+if(l.d)for(const[k,v]of Object.entries(l.d))r+=`<div class="pr"><span class="l">${k}</span><span class="v">${v}</span></div>`;
+return`<div><div class="ph"><div class="pc" style="color:var(--ac)">${CAT[l.c]?.label||l.c}</div><div class="pt">${l.ic} ${l.n}</div></div><div class="pb">${r}</div></div>`;}
+
+function popInv(i){const c=sC(i.stadiu);
+return`<div><div class="ph"><div class="pc" style="color:${c}">${i.cat} \u2022 ${i.id}</div><div class="pt">${i.ic} ${i.n}</div></div>
+<div class="pb"><div class="pr"><span class="l">Cartier</span><span class="v">${i.cartier}</span></div>
+<div class="pr"><span class="l">Buget</span><span class="v">${fR(i.buget)} RON</span></div>
+<div class="pr"><span class="l">Platit</span><span class="v">${fR(i.platit)} RON</span></div>
+<div class="pr"><span class="l">Sursa</span><span class="v">${i.sursa}</span></div>
+<div class="pr"><span class="l">Termen</span><span class="v">${i.termen}</span></div>
+<div class="ppb"><div class="ppf" style="width:${i.progres}%;background:${c}"></div></div>
+<div class="ppt"><span>Progres</span><span style="color:${c};font-weight:700">${i.progres}%</span></div>
+<div style="font-size:10px;color:var(--tm);margin-top:5px;line-height:1.3">${i.desc}</div>
+</div><div class="pf"><span class="tg ${sT(i.stadiu)}">${sL(i.stadiu)}</span></div></div>`;}
+
+function popAc(a){const ci=ACC[a.c]||{};
+return`<div><div class="ph"><div class="pc" style="color:${ci.color||'#64748b'}">${a.c}</div><div class="pt">${ci.icon||'\u{1F4CB}'} AC ${a.nr}/${a.dt}</div></div>
+<div class="pb"><div class="pr"><span class="l">Valoare</span><span class="v" style="color:var(--g)">${a.v?fR(a.v)+' RON':'N/A'}</span></div>
+<div class="pr"><span class="l">Investitor</span><span class="v">${a.inv||'-'}</span></div>
+<div class="pr"><span class="l">Adresa</span><span class="v">${a.ad||'-'}</span></div>
+<div class="pr"><span class="l">An</span><span class="v">${a.a}</span></div>
+<div style="font-size:10px;color:var(--tm);margin-top:4px;line-height:1.3">${a.ds}</div>
+</div><div class="pf"><span class="tg" style="background:${ci.color||'#64748b'}20;color:${ci.color||'#64748b'}">${a.c}</span><span class="tg tg-p">An ${a.a}</span></div></div>`;}
+
+function popSt(tags){const nm=tags.name||'Fara denumire';
+const stName=nm.toLowerCase();
+const matches=AC.filter(a=>a.st.toLowerCase().includes(stName)||a.ad.toLowerCase().includes(stName));
+let acInfo='';
+if(matches.length>0){
+const catCounts={};let totalVal=0;
+matches.forEach(a=>{catCounts[a.c]=(catCounts[a.c]||0)+1;totalVal+=a.v;});
+acInfo=`<div style="border-top:1px solid var(--bd);padding:8px 0 0;margin-top:6px"><div style="font-size:9px;font-weight:700;text-transform:uppercase;color:var(--g);margin-bottom:4px">\u{1F4CB} ${matches.length} Autorizatii pe aceasta strada</div>`;
+acInfo+=`<div class="pr"><span class="l">Val. totala</span><span class="v" style="color:var(--g)">${fR(totalVal)} RON</span></div>`;
+for(const[cat,cnt] of Object.entries(catCounts)){const ci=ACC[cat]||{};acInfo+=`<div style="font-size:10px;margin-bottom:2px"><span style="color:${ci.color||'#666'}">${ci.icon||''}</span> ${cnt}x ${cat}</div>`;}
+acInfo+=`</div>`;}
+let rows=`<div class="pr"><span class="l">Tip</span><span class="v">${tags.highway||''}</span></div>`;
+if(tags.surface)rows+=`<div class="pr"><span class="l">Suprafata</span><span class="v">${tags.surface}</span></div>`;
+return`<div><div class="ph"><div class="pc" style="color:var(--p)">Retea stradala</div><div class="pt">\u{1F6E3}\uFE0F ${nm}</div></div><div class="pb">${rows}${acInfo}</div></div>`;}
+
+function doRender(){
+const q=(document.getElementById('sI').value||'').toLowerCase();
+mks.forEach(m=>map.removeLayer(m));mks.length=0;
+if(bV){const f=L_ALL.filter(l=>aF.has(l.c)&&(!q||l.n.toLowerCase().includes(q)||(l.a||'').toLowerCase().includes(q)));
+f.forEach(l=>{const ic=L.divIcon({className:'custom-marker',html:`<div class="md c-${l.c}"><span class="em">${l.ic}</span></div>`,iconSize:[28,28],iconAnchor:[14,28],popupAnchor:[0,-30]});
+mks.push(L.marker([l.la,l.ln],{icon:ic}).addTo(map).bindPopup(popPoi(l),{maxWidth:280}));});
+document.getElementById('bBs').textContent=f.length+' loc';
+if(mode==='poi'){const el=document.getElementById('pPoi');el.innerHTML='';
+const g={};f.forEach(l=>{if(!g[l.c])g[l.c]=[];g[l.c].push(l);});
+for(const[c,items]of Object.entries(g)){const ci=CAT[c];const h=document.createElement('h4');h.textContent=`${ci?.em||''} ${ci?.label||c} (${items.length})`;el.appendChild(h);
+items.forEach(l=>{const d=document.createElement('div');d.className='pi';d.innerHTML=`<div class="ic i-${l.c}">${l.ic}</div><div><div class="nm">${l.n}</div><div class="ad">${l.a||''}</div></div>`;
+d.onclick=()=>{map.flyTo([l.la,l.ln],17,{duration:.5});const mk=mks.find(m=>{const ll=m.getLatLng();return Math.abs(ll.lat-l.la)<.0001&&Math.abs(ll.lng-l.ln)<.0001;});if(mk)setTimeout(()=>mk.openPopup(),600);};el.appendChild(d);});}}}
+document.querySelectorAll('.ch').forEach(c=>c.className='ch'+(aF.has(c.dataset.cat)?' on':''));
+rInv(q);rAc(q);rHeat();}
+
+function rInv(q){iMks.forEach(m=>map.removeLayer(m));iMks.length=0;if(!iV)return;
+INV.forEach(i=>{if(q&&!i.n.toLowerCase().includes(q)&&!i.cat.toLowerCase().includes(q))return;
+const ic=L.divIcon({className:'invest-marker',html:`<div class="id ${sM(i.stadiu)}"><span class="em">${i.ic}</span></div>`,iconSize:[34,34],iconAnchor:[17,17],popupAnchor:[0,-20]});
+iMks.push(L.marker([i.la,i.ln],{icon:ic}).addTo(map).bindPopup(popInv(i),{maxWidth:310}));});
+if(mode==='invest'){const el=document.getElementById('pInv');el.innerHTML='';
+const h=document.createElement('h4');h.innerHTML=`\u{1F4B0} Investitii publice (${INV.length})`;el.appendChild(h);
+INV.forEach(i=>{if(q&&!i.n.toLowerCase().includes(q)&&!i.cat.toLowerCase().includes(q))return;
+const c=sC(i.stadiu);const d=document.createElement('div');d.className='ii';
+d.innerHTML=`<div class="top"><div class="iic" style="background:${c}20;color:${c}">${i.ic}</div><div style="flex:1;min-width:0"><div class="cat">${i.cat} \u2022 ${i.cartier}</div><div class="ttl">${i.n}</div></div></div>
+<div><span class="tg ${sT(i.stadiu)}">${sL(i.stadiu)}</span>${i.buget?`<span class="tg" style="background:#f0fdf4;color:var(--g)">${fR(i.buget)} RON</span>`:''}</div>
+<div class="bar"><div class="barf" style="width:${i.progres}%;background:${c}"></div></div><div class="barl"><span>${i.sursa.substring(0,35)}</span><span>${i.progres}%</span></div>`;
+d.onclick=()=>{map.flyTo([i.la,i.ln],16,{duration:.5});const mk=iMks.find(m=>Math.abs(m.getLatLng().lat-i.la)<.001&&Math.abs(m.getLatLng().lng-i.ln)<.001);if(mk)setTimeout(()=>mk.openPopup(),600);};
+el.appendChild(d);});}}
+
+function rAc(q){aMks.forEach(m=>map.removeLayer(m));aMks.length=0;if(!aV)return;
+const filt=AC.filter(a=>!q||a.inv.toLowerCase().includes(q)||a.ds.toLowerCase().includes(q)||a.st.toLowerCase().includes(q)||a.ad.toLowerCase().includes(q));
+filt.forEach(a=>{const ci=ACC[a.c]||{};
+const ic=L.divIcon({className:'ac-marker',html:`<div class="acd" style="background:${ci.color||'#64748b'}">${ci.icon||'\u{1F4CB}'}</div>`,iconSize:[22,22],iconAnchor:[11,11],popupAnchor:[0,-14]});
+aMks.push(L.marker([a.la,a.ln],{icon:ic}).addTo(map).bindPopup(popAc(a),{maxWidth:300}));});
+document.getElementById('bAs').textContent=filt.length+' AC';
+if(mode==='ac'){
+const ca=document.getElementById('chartArea');ca.innerHTML='<h4>\u{1F4CA} Evolutie autorizatii pe an</h4>';
+const yrs={};AC.forEach(a=>{if(!yrs[a.a])yrs[a.a]={c:0,v:0};yrs[a.a].c++;yrs[a.a].v+=a.v;});
+const maxC=Math.max(...Object.values(yrs).map(y=>y.c));
+for(const y of Object.keys(yrs).sort()){const pct=Math.round(yrs[y].c/maxC*100);
+ca.innerHTML+=`<div class="cb"><span class="yr">${y}</span><div class="fill" style="width:${pct}%;background:var(--ac)">${yrs[y].c}</div><span class="vl">${fR(yrs[y].v)} RON</span></div>`;}
+const ti=document.getElementById('topInv');ti.innerHTML='<h4>\u{1F3C6} Top 10 investitori</h4>';
+const invMap={};AC.forEach(a=>{const k=a.inv.substring(0,45);if(!invMap[k])invMap[k]={c:0,v:0};invMap[k].c++;invMap[k].v+=a.v;});
+const topI=Object.entries(invMap).sort((a,b)=>b[1].v-a[1].v).slice(0,10);
+topI.forEach(([nm,v],i)=>{ti.innerHTML+=`<div class="ir"><span class="rk">${i+1}.</span><span class="in">${nm}</span><span class="iv">${fR(v.v)} RON</span></div>`;});
+const sp=document.getElementById('stPanel');sp.innerHTML='<h4>\u{1F6E3}\uFE0F Top strazi</h4>';
+ST.slice(0,20).forEach(s=>{const d=document.createElement('div');d.className='sti';
+let catsHtml='';if(s.cats)for(const[cat,cnt]of Object.entries(s.cats)){const ci=ACC[cat]||{};catsHtml+=`<span class="tg" style="background:${ci.color||'#666'}15;color:${ci.color||'#666'}">${ci.icon||''} ${cnt}x ${cat.substring(0,20)}</span>`;}
+d.innerHTML=`<div class="sn">${s.s}</div><div class="sm">${s.c} autorizatii \u2022 ${fR(s.v)} RON</div><div class="sc">${catsHtml}</div>`;
+d.onclick=()=>map.flyTo([s.la,s.ln],17,{duration:.5});sp.appendChild(d);});
+const al=document.getElementById('acList');al.innerHTML='';
+const h2=document.createElement('h4');h2.innerHTML=`\u{1F4CB} Toate autorizatiile (${filt.length})`;al.appendChild(h2);
+filt.slice(0,50).forEach(a=>{const ci=ACC[a.c]||{};
+const d=document.createElement('div');d.className='pi';
+d.innerHTML=`<div class="ic" style="background:${ci.color||'#666'}20">${ci.icon||'\u{1F4CB}'}</div><div><div class="nm">AC ${a.nr}/${a.dt} \u2022 ${fR(a.v)} RON</div><div class="ad">${a.inv.substring(0,40)} \u2022 ${a.ad.substring(0,30)}</div></div>`;
+d.onclick=()=>{map.flyTo([a.la,a.ln],17,{duration:.5});const mk=aMks.find(m=>Math.abs(m.getLatLng().lat-a.la)<.001&&Math.abs(m.getLatLng().lng-a.ln)<.001);if(mk)setTimeout(()=>mk.openPopup(),600);};
+al.appendChild(d);});
+if(filt.length>50)al.innerHTML+=`<div style="padding:10px;text-align:center;color:var(--tm);font-size:11px">... si inca ${filt.length-50} autorizatii</div>`;}}
+
+function rHeat(){hCirc.forEach(c=>map.removeLayer(c));hCirc.length=0;if(!hV)return;
+const src=aV?ST.filter(s=>s.v>0):INV.filter(i=>i.buget>0);
+const maxV=Math.max(...src.map(s=>aV?s.v:s.buget));
+src.forEach(s=>{const v=aV?s.v:s.buget;const r=60+(v/maxV)*300;
+const col=aV?(ACC[Object.keys(s.cats||{})[0]]||{}).color||'#7c3aed':'#dc2626';
+hCirc.push(L.circle([s.la,s.ln],{radius:r,color:col,fillColor:col,fillOpacity:.18,weight:1.5,opacity:.4}).addTo(map));});}
+
+function togB(){bV=!bV;document.getElementById('bB').classList.toggle('on',bV);doRender();}
+function togI(){iV=!iV;const b=document.getElementById('bI');b.classList.toggle('gi',iV);document.getElementById('bIs').textContent=iV?INV.length+' proiecte':'Click pt activare';
+if(iV){const lg=document.getElementById('lgd');lg.innerHTML='<div class="lgdi"><div class="lgdd" style="background:#16a34a"></div>Finalizat</div><div class="lgdi"><div class="lgdd" style="background:#d97706"></div>Executie</div><div class="lgdi"><div class="lgdd" style="background:#2563eb"></div>Licitatie</div><div class="lgdi"><div class="lgdd" style="background:#94a3b8"></div>Planificat</div><div class="lgdi"><div class="lgdd" style="background:#dc2626"></div>Intarziat</div>';lg.classList.add('v');
+const kp=document.getElementById('kpi');const wb=INV.filter(i=>i.buget>0);const tB=wb.reduce((s,i)=>s+i.buget,0);const tP=wb.reduce((s,i)=>s+i.platit,0);const aP=wb.length?Math.round(wb.reduce((s,i)=>s+i.progres,0)/wb.length):0;
+kp.innerHTML=`<h5>\u{1F4CA} KPI Investitii</h5><div class="kr"><span class="kl">Total</span><span class="kv">${INV.length}</span></div><div class="kr"><span class="kl">Buget</span><span class="kv">${fR(tB)} RON</span></div><div class="kr"><span class="kl">Platit</span><span class="kv">${fR(tP)} RON</span></div><div class="kr"><span class="kl">Executie</span><span class="kv">${aP}%</span></div><div class="kb"><div class="kbf" style="width:${aP}%"></div></div><div style="font-size:8px;color:var(--tm);margin-top:4px">Cost/loc: ${Math.round(tB/30766).toLocaleString('ro-RO')} RON</div>`;kp.classList.add('v');
+}else{document.getElementById('lgd').classList.remove('v');document.getElementById('kpi').classList.remove('v');}doRender();}
+function togA(){aV=!aV;document.getElementById('bA').classList.toggle('gi',aV);document.getElementById('bAs').textContent=aV?AC.length+' AC':'Click pt activare';doRender();}
+function togH(){hV=!hV;const b=document.getElementById('bH');if(hV){b.classList.add('on');b.style.borderColor='var(--r)';b.style.background='#fee2e2';b.style.color='var(--r)';document.getElementById('bHs').textContent='activa';}
+else{b.classList.remove('on');b.style.borderColor='';b.style.background='';b.style.color='';document.getElementById('bHs').textContent='Click pt activare';}rHeat();}
+function togSb(){const s=document.getElementById('sb');s.classList.toggle('hid');document.getElementById('sBt').innerHTML=s.classList.contains('hid')?'&#9654;':'&#9664;';}
+
+const HS={motorway:{color:'#b91c1c',weight:6,opacity:.9},trunk:{color:'#c2410c',weight:5.5,opacity:.9},primary:{color:'#dc2626',weight:5,opacity:.85},secondary:{color:'#ea580c',weight:4,opacity:.85},tertiary:{color:'#d97706',weight:3.5,opacity:.8},residential:{color:'#2563eb',weight:2.5,opacity:.75},living_street:{color:'#3b82f6',weight:2,opacity:.7},service:{color:'#7c3aed',weight:2,opacity:.7},unclassified:{color:'#64748b',weight:2.5,opacity:.7},pedestrian:{color:'#0891b2',weight:2,opacity:.75},footway:{color:'#16a34a',weight:1.5,opacity:.75},cycleway:{color:'#059669',weight:1.5,opacity:.7},path:{color:'#6b7280',weight:1.5,opacity:.65},track:{color:'#92400e',weight:2,opacity:.65},motorway_link:{color:'#b91c1c',weight:3.5,opacity:.8},trunk_link:{color:'#c2410c',weight:3,opacity:.8},primary_link:{color:'#dc2626',weight:3,opacity:.8},secondary_link:{color:'#ea580c',weight:2.5,opacity:.75},tertiary_link:{color:'#d97706',weight:2.5,opacity:.75}};
+function gSt(h){return HS[h]||HS.unclassified;}
+function rSt(){if(sLayer){map.removeLayer(sLayer);sLayer=null;}if(!sData||!sV)return;
+const layers=sData.elements.filter(e=>e.type==='way'&&e.geometry&&e.tags&&e.tags.highway).flatMap(e=>{const co=e.geometry.map(p=>[p.lat,p.lon]),st=gSt(e.tags.highway);
+const vis=L.polyline(co,{color:st.color,weight:st.weight,opacity:st.opacity,smoothFactor:1.5,interactive:false});
+const hit=L.polyline(co,{color:'transparent',weight:20,opacity:0,smoothFactor:1.5});
+hit.bindPopup(popSt(e.tags),{maxWidth:300});
+hit.on('mouseover',()=>vis.setStyle({weight:st.weight+3,opacity:1}));hit.on('mouseout',()=>vis.setStyle({weight:st.weight,opacity:st.opacity}));return[vis,hit];});
+sLayer=L.layerGroup(layers).addTo(map);}
+async function lS(){const b=document.getElementById('bS'),s=document.getElementById('bSs');b.classList.add('yi');s.textContent='Se incarca...';
+try{const hw='motorway|trunk|primary|secondary|tertiary|residential|living_street|service|unclassified|pedestrian|footway|cycleway|path|track|motorway_link|trunk_link|primary_link|secondary_link|tertiary_link';
+const gst='P.r.ul Sec|Nucule.|St.nelor|Cioc.rliei|Cizmarului|Pietri.|Trandafirilor|Frunzelor|Bisericilor|Cucului|Gheorghe Doja|24 Ianuarie|16 Februarie|B.lcescu|Ip.tescu|Gr.dinilor|Gr.din.riei|Berzei|G..te.ti|Bisericii|Petru Rare.|B.rcan|Teiului|Buzdugan|Florilor';
+const q='[out:json][timeout:120];'+
+'node["name"~"Bl.ge.ti"]["place"](47.15,26.60,47.35,26.85)->.n1;'+
+'node["name"="Lunca"]["place"](47.15,26.60,47.35,26.85)->.n2;'+
+'node["name"="Sodomeni"]["place"](47.15,26.60,47.35,26.85)->.n3;'+
+'node["name"~"Bo.teni"]["place"](47.15,26.60,47.35,26.85)->.n4;'+
+'way["name"~"'+gst+'"]["highway"~"."](47.15,26.60,47.35,26.85)->.gst;'+
+'(way["highway"~"'+hw+'"](47.232,26.698,47.270,26.748);'+
+'way["highway"~"'+hw+'"]["name"!~"Oituz"](around.n1:1200);'+
+'way["highway"~"'+hw+'"]["name"!~"Oituz"](around.n2:1000);'+
+'way["highway"~"'+hw+'"](around.n3:1200);'+
+'way["highway"~"'+hw+'"](around.n4:1200);'+
+'.gst;);out body geom;';
+sData=await(await fetch('https://overpass-api.de/api/interpreter',{method:'POST',body:'data='+encodeURIComponent(q),headers:{'Content-Type':'application/x-www-form-urlencoded'}})).json();
+sLoaded=true;b.classList.remove('yi');uSB();rSt();}catch(e){b.classList.remove('yi','on');sV=false;s.textContent='Eroare';}}
+function uSB(){const b=document.getElementById('bS'),s=document.getElementById('bSs');if(sV){b.classList.add('on');s.textContent=(sData?sData.elements.filter(e=>e.type==='way').length:0)+' strazi';}else{b.classList.remove('on');s.textContent='Click pt activare';}}
+function togS(){sV=!sV;if(sV&&!sLoaded)lS();else{uSB();rSt();}}
+
+bFilt();doRender();
+</script></body></html>
