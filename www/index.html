@@ -161,7 +161,6 @@ const L_ALL=[
 {n:"Casa de Cultura Pascani",la:47.24992,ln:26.71974,ic:"\u{1F3AD}",c:"cultura",a:"Str. Moldovei 2",d:{"Tel":"0232 767 054"}},
 {n:"Lidl",la:47.24793,ln:26.71301,ic:"\u{1F6D2}",c:"comert",a:"Str. Moldovei 17",d:{"Program":"L-S 07-22, D 08-20"}},
 {n:"Kaufland",la:47.24837280,ln:26.70816730,ic:"\u{1F6D2}",c:"comert",a:"Str. Moldovei 98",d:{"Program":"L-S 07-22:30"}},
-{n:"Dedeman",la:47.24434,ln:26.71447,ic:"\u{1F3D7}\uFE0F",c:"comert",a:"Str. Gradiniței 11",d:{"Program":"L-V 08-20"}},
 {n:"Profi Super",la:47.24896,ln:26.72049,ic:"\u{1F6D2}",c:"comert",a:"Str. Stefan cel Mare",d:{"Program":"06:00-22:00"}},
 {n:"Profi City",la:47.24573,ln:26.72276,ic:"\u{1F6D2}",c:"comert",a:"Str. Eugen Stamate",d:{"Program":"06:00-22:00"}},
 {n:"Penny (Gradiniței)",la:47.24662,ln:26.71304,ic:"\u{1F6D2}",c:"comert",a:"Str. Gradiniței 25",d:{"Program":"L-S 07:30-22"}},
@@ -379,8 +378,8 @@ function popPoi(l){let r=`<div class="pr"><span class="l">Adresa</span><span cla
 if(l.d)for(const[k,v]of Object.entries(l.d))r+=`<div class="pr"><span class="l">${k}</span><span class="v">${v}</span></div>`;
 const poiSt=normSt(l.a);
 const nmKey=(l.n||'').toLowerCase().split(/[\s,()/]+/).find(w=>w.length>4)||'';
-const acM=AC.filter(a=>{const ast=normSt(a.st);const ainv=(a.inv||'').toLowerCase();return(ast.length>3&&poiSt.startsWith(ast))||(nmKey&&ainv.includes(nmKey));});
-const invM=INV.filter(i=>{const ia=normSt(i.a);const inm=(i.n||'').toLowerCase();return(ia.length>3&&(poiSt.startsWith(ia)||ia===poiSt))||(nmKey&&inm.includes(nmKey));});
+const acM=AC.filter(a=>{const ainv=(a.inv||'').toLowerCase();return nmKey&&ainv.includes(nmKey);});
+const invM=INV.filter(i=>{const inm=(i.n||'').toLowerCase();return nmKey&&inm.includes(nmKey);});
 const acTotal=acM.reduce((s,a)=>s+(a.v||0),0);
 const invTotal=invM.reduce((s,i)=>s+(i.buget||0),0);
 if(acM.length)r+=`<div class="pr"><span class="l">Autorizatii construire (${acM.length})</span><span class="v" style="color:var(--g)">${fR(acTotal)} RON</span></div>`;
