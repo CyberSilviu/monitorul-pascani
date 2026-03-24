@@ -13,7 +13,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--tx);heigh
 .logo{width:36px;height:36px;display:flex;align-items:center;justify-content:center;font-size:28px}
 .hd h1{font-family:'Didot','Bodoni MT',Georgia,serif;font-size:17px;font-weight:700}
 .hd-sub{font-size:9px;color:var(--tm);font-weight:500;letter-spacing:.5px;text-transform:uppercase}
-.tabs{display:flex;background:var(--bg);border-radius:8px;border:1px solid var(--bd);overflow:hidden}
+.tabs{display:flex;background:var(--bg);border-radius:8px;border:1px solid var(--bd);overflow:hidden}.story-btn{display:flex;align-items:center;gap:5px;padding:5px 10px;border-radius:8px;border:1.5px solid #7c3aed;background:#f5f3ff;color:#7c3aed;font-size:10px;font-weight:700;text-decoration:none;white-space:nowrap;transition:.2s;cursor:pointer}.story-btn:hover{background:#7c3aed;color:#fff}
 .tab{padding:5px 12px;font-size:11px;font-weight:600;cursor:pointer;border:none;background:transparent;color:var(--tm);font-family:inherit;transition:.2s}
 .tab.on{background:var(--ac);color:#fff}
 .pill{background:var(--bg);border:1px solid var(--bd);border-radius:16px;padding:3px 10px;font-size:10px;font-weight:600;color:var(--tm)}
@@ -102,7 +102,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--tx);heigh
 .c-cultura{background:#9333ea}.i-cultura{background:#f3e8ff}.c-comert{background:#ea580c}.i-comert{background:#fff7ed}
 .c-cazare{background:#0d9488}.i-cazare{background:#ccfbf1}.c-finante{background:#4f46e5}.i-finante{background:#e0e7ff}
 .c-urgente{background:#be123c}.i-urgente{background:#ffe4e6}.c-posta{background:#ca8a04}.i-posta{background:#fef9c3}
-.c-restaurant{background:#c2410c}.i-restaurant{background:#fff7ed}.c-farmacie{background:#059669}.i-farmacie{background:#d1fae5}
+.c-restaurant{background:#c2410c}.i-restaurant{background:#fff7ed}.c-farmacie{background:#059669}.i-farmacie{background:#d1fae5}.c-industrie{background:#b45309}.i-industrie{background:#fef3c7}
 .lgd{position:fixed;bottom:14px;left:50%;transform:translateX(-50%);z-index:950;background:var(--cd);border:1px solid var(--bd);border-radius:10px;box-shadow:0 8px 30px rgba(0,0,0,.12);padding:8px 14px;display:none;gap:10px;align-items:center;font-size:10px}
 .lgd.v{display:flex}.lgdi{display:flex;align-items:center;gap:4px;font-weight:600}
 .lgdd{width:9px;height:9px;border-radius:50%;border:1.5px solid #fff;box-shadow:0 1px 2px rgba(0,0,0,.2)}
@@ -120,7 +120,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--tx);heigh
 <script>window.addEventListener('load',function(){setTimeout(function(){var s=document.getElementById('splash');s.classList.add('hide');setTimeout(function(){s.remove()},700)},2000);});</script>
 <div class="hd"><div class="hd-l"><div class="logo"><img src="logo.svg" alt="CivicData Live" style="width:30px;height:30px;display:block"></div><div><h1><span class="sp-civic">Civic</span><span class="sp-data">Data</span> <span class="sp-live">Live</span></h1><div class="hd-sub">Investitia mea &#8226; Smart City &#8226; Colegiul Tehnic Unirea</div></div></div>
 <div style="display:flex;align-items:center;gap:8px"><div class="tabs"><button class="tab on" onclick="setMode('poi')">Locatii</button><button class="tab" onclick="setMode('invest')">Investitii</button><button class="tab" onclick="setMode('ac')">Autorizatii</button></div>
-<div class="pill"><span id="tc">0</span> loc &#8226; <span id="nc">0</span> inv &#8226; <span id="acc">0</span> AC</div></div></div>
+<a class="story-btn" href="https://storymaps.arcgis.com/stories/a1e91d07f58a48fa9e901a2c4246cbef?play=true&speed=medium" target="_blank">🗺️ Harta Story</a><div class="pill"><span id="tc">0</span> loc &#8226; <span id="nc">0</span> inv &#8226; <span id="acc">0</span> AC</div></div></div>
 <div class="sb" id="sb">
 <div class="bb"><h3>Buget Municipal Pascani 2025</h3><div class="bgr"><div class="bc"><div class="bl">Venituri</div><div class="bv" style="color:var(--g)">224,0M</div><div class="bs">223.985.197 RON</div></div><div class="bc"><div class="bl">Cheltuieli</div><div class="bv" style="color:var(--ac)">228,3M</div><div class="bs">228.337.371 RON</div></div><div class="bc"><div class="bl">Sold</div><div class="bv" style="color:var(--r)">-4,35M</div><div class="bs">Deficit bugetar</div></div></div><div style="margin-top:8px;padding:8px;background:var(--cd);border-radius:8px;border:1px solid var(--bd);text-align:center"><div style="font-size:8px;font-weight:600;text-transform:uppercase;color:var(--p);margin-bottom:3px">Total autorizatii construire (2020-2026)</div><div style="font-size:14px;font-weight:700;color:var(--p)">319.350.748 RON</div><div style="font-size:10px;color:var(--tm)">62.740.814 EUR &#8226; 57 autorizatii (18 investitori)</div></div><div class="bsrc">Sursa: <a href="https://transparenta.eu/entities/4541360" target="_blank">Transparenta.eu</a> + Autorizatii Primaria Pascani &#8226; CUI 4541360</div></div>
 <div class="srch"><div class="sw"><span>&#128269;</span><input type="text" placeholder="Cauta locatie, investitie, strada..." id="sI" oninput="doRender()"></div></div>
@@ -137,7 +137,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--tx);heigh
 <div id="map"></div><div class="lgd" id="lgd"></div><div class="kpi" id="kpi"></div>
 <script>
 // === DATA ===
-const CAT={institutie:{label:"Institutii",em:"\u{1F3DB}\uFE0F"},transport:{label:"Transport",em:"\u{1F682}"},religie:{label:"Biserici",em:"\u26EA"},educatie:{label:"Educatie",em:"\u{1F393}"},sanatate:{label:"Sanatate",em:"\u{1F3E5}"},agrement:{label:"Parcuri",em:"\u{1F333}"},cultura:{label:"Cultura",em:"\u{1F3AD}"},comert:{label:"Magazine",em:"\u{1F6D2}"},cazare:{label:"Cazare",em:"\u{1F3E8}"},finante:{label:"Banci",em:"\u{1F3E6}"},urgente:{label:"Urgente",em:"\u{1F692}"},posta:{label:"Posta",em:"\u{1F4EE}"},restaurant:{label:"Restaurante",em:"\u{1F37D}\uFE0F"},farmacie:{label:"Farmacii",em:"\u{1F48A}"}};
+const CAT={institutie:{label:"Institutii",em:"\u{1F3DB}\uFE0F"},transport:{label:"Transport",em:"\u{1F682}"},religie:{label:"Biserici",em:"\u26EA"},educatie:{label:"Educatie",em:"\u{1F393}"},sanatate:{label:"Sanatate",em:"\u{1F3E5}"},agrement:{label:"Parcuri",em:"\u{1F333}"},cultura:{label:"Cultura",em:"\u{1F3AD}"},comert:{label:"Magazine",em:"\u{1F6D2}"},cazare:{label:"Cazare",em:"\u{1F3E8}"},finante:{label:"Banci",em:"\u{1F3E6}"},urgente:{label:"Urgente",em:"\u{1F692}"},posta:{label:"Posta",em:"\u{1F4EE}"},restaurant:{label:"Restaurante",em:"\u{1F37D}\uFE0F"},farmacie:{label:"Farmacii",em:"\u{1F48A}",industrie:{label:"Industrie",em:"🏭"}}};
 const ACC={"Constructii rezidentiale":{"color":"#2563eb","icon":"🏠"},"Retele gaze naturale":{"color":"#ea580c","icon":"🔥"},"Reabilitari / Modernizari":{"color":"#16a34a","icon":"🔨"},"Industrial / Comercial":{"color":"#7c3aed","icon":"🏭"},"Retele electrice / Fotovoltaice":{"color":"#d97706","icon":"⚡"},"Altele":{"color":"#64748b","icon":"📋"},"Extinderi cladiri":{"color":"#0891b2","icon":"🏗️"},"Demolari / Desfiintari":{"color":"#dc2626","icon":"🔴"},"Anexe / Garaje":{"color":"#059669","icon":"🏚️"},"Imprejmuiri":{"color":"#ca8a04","icon":"🧱"},"Infrastructura rutiera":{"color":"#be123c","icon":"🛣️"},"Retele apa / Canalizare":{"color":"#0d9488","icon":"💧"},"Educatie":{"color":"#9333ea","icon":"🎓"}};
 const L_ALL=[
 {n:"Primaria Municipiului Pascani",la:47.24512460,ln:26.72407590,ic:"\u{1F3DB}\uFE0F",c:"institutie",a:"Str. Stefan cel Mare 16",d:{"Program":"L-V 07:30-16:00","Tel":"0232 762 300"}},
@@ -184,7 +184,25 @@ const L_ALL=[
 {n:"Farmacia DONA (Vale)",la:47.25351,ln:26.72326,ic:"\u{1F48A}",c:"farmacie",a:"Str. Cuza Voda 9",d:{"Program":"L-V 08-20"}},
 {n:"Farmacia Dr. Max",la:47.24869,ln:26.72097,ic:"\u{1F48A}",c:"farmacie",a:"Str. Stefan cel Mare Bl.A6",d:{"Program":"L-V 08-20"}},
 {n:"Ropharma Centrala",la:47.24756,ln:26.72303,ic:"\u{1F48A}",c:"farmacie",a:"Str. Stefan cel Mare A4",d:{"Program":"L-V 08-20"}},
-{n:"Farmacia Galemih (Non-stop)",la:47.25716,ln:26.72386,ic:"\u{1F48A}",c:"farmacie",a:"Bloc G5, zona Vale",d:{"Program":"NON-STOP"}}
+{n:"Farmacia Galemih (Non-stop)",la:47.25716,ln:26.72386,ic:"\u{1F48A}",c:"farmacie",a:"Bloc G5, zona Vale",d:{"Program":"NON-STOP"}},
+{n:"KOSAROM SA",la:47.2489943,ln:26.7369103,ic:"🥩",c:"industrie",a:"Str. Abatorului 65",d:{"Activitate":"Prelucrarea si conservarea carnii","Angajati":"743"}},
+{n:"AVA STAR SRL",la:47.2668054,ln:26.7200964,ic:"🥩",c:"industrie",a:"Str. 1 Mai 72",d:{"Activitate":"Prelucrarea si conservarea carnii","Angajati":"312"}},
+{n:"ROMPAK SRL",la:47.2491517,ln:26.7384394,ic:"🍰",c:"industrie",a:"Str. Gradiniței 1C",d:{"Activitate":"Fabricarea altor produse alimentare","Angajati":"743"}},
+{n:"PROINVEST GROUP SRL",la:47.2449837,ln:26.7346997,ic:"🔧",c:"industrie",a:"Str. Gradinitei 1",d:{"Activitate":"Productia de profile obtinute la rece","Angajati":"1485"}},
+{n:"VIOSAND TRICOTEXT SRL",la:47.2456355,ln:26.6987428,ic:"🧵",c:"industrie",a:"Str. Moldovei 160",d:{"Activitate":"Comert cu amanuntul produse alimentare","Angajati":"371"}},
+{n:"ELECTROPUTERE VFU PASCANI SA",la:47.252233,ln:26.713752,ic:"🚆",c:"industrie",a:"Str. Garii 18",d:{"Activitate":"Fabricarea materialului rulant","Angajati":"2970"}},
+{n:"LORIMER SRL",la:47.2513471,ln:26.7147166,ic:"🛒",c:"industrie",a:"Str. Mihail Eminescu 4A",d:{"Activitate":"Comert cu amanuntul produse alimentare","Angajati":"883"}},
+{n:"AGROCOMPLEX LUNCA PASCANI SA",la:47.2611593,ln:26.7186221,ic:"🌾",c:"industrie",a:"Str. Garii 40",d:{"Activitate":"Ferme mixte cultura si animale","Angajati":"742"}},
+{n:"PROINVEST CONSTRUCTION SRL",la:47.2449837,ln:26.7346997,ic:"🏗️",c:"industrie",a:"Str. Gradinitei 1",d:{"Activitate":"Constructii rezidentiale si nerezidentiale","Angajati":"1485"}},
+{n:"NOVA GENERAL CONSTRUCT SRL",la:47.2466401,ln:26.7238158,ic:"🏗️",c:"industrie",a:"Str. Gradinitei 34",d:{"Activitate":"Constructii rezidentiale si nerezidentiale","Angajati":"186"}},
+{n:"GOLDEN STAR SRL",la:47.2498745,ln:26.7389089,ic:"🧪",c:"industrie",a:"Str. Abator 42",d:{"Activitate":"Comert cu ridicata produse chimice","Angajati":"371"}},
+{n:"ROM-ELADA SRL",la:47.2464437,ln:26.7093939,ic:"⛽",c:"industrie",a:"Str. Moldovei 2 BIS",d:{"Activitate":"Comert combustibili","Angajati":"186"}},
+{n:"TECO CRIS SRL",la:47.2461002,ln:26.7143078,ic:"🏪",c:"industrie",a:"Str. Garii 34",d:{"Activitate":"Comert cu amanuntul produse nealimentare","Angajati":"156"}},
+{n:"MARVIO SRL",la:47.2514308,ln:26.7344581,ic:"🧱",c:"industrie",a:"Str. Morilor 9",d:{"Activitate":"Fabricarea produselor din beton","Angajati":"442"}},
+{n:"ALL CONCRETE A.G. SRL",la:47.2466767,ln:26.7300496,ic:"🧱",c:"industrie",a:"Str. Gradinitei 8B",d:{"Activitate":"Fabricarea betonului","Angajati":"743"}},
+{n:"AUTO TRANS COM SRL",la:47.2448467,ln:26.6984738,ic:"🚗",c:"industrie",a:"Str. Moldovei 67",d:{"Activitate":"Comert piese auto","Angajati":"442"}},
+{n:"SIMBAS GROUP SRL",la:47.2411683,ln:26.7087919,ic:"💱",c:"industrie",a:"Str. M. Eminescu",d:{"Activitate":"Intermedieri comert produse diverse","Angajati":"625"}},
+{n:"ELECTROTERMOMETRIA SRL",la:47.2494581,ln:26.7228247,ic:"📏",c:"industrie",a:"Str. 1 Decembrie 1918 nr.44",d:{"Activitate":"Fabricare instrumente masura/control","Angajati":"743"}}
 ];
 const INV=[
 // 1. Transport public - contract semnat 23.10.2025 cod SMIS 341049
