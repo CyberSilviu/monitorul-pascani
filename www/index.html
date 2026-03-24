@@ -11,7 +11,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--tx);heigh
 .hd{position:fixed;top:0;left:0;right:0;z-index:1000;background:var(--cd);border-bottom:1px solid var(--bd);padding:calc(8px + var(--sat)) 16px 8px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 1px 3px rgba(0,0,0,.08)}
 .hd-l{display:flex;align-items:center;gap:10px}
 .logo{width:36px;height:36px;display:flex;align-items:center;justify-content:center;font-size:28px}
-.hd h1{font-family:'Didot','Bodoni MT',Georgia,serif;font-size:17px;font-weight:700}.hd h1 span{color:#e11d48}
+.hd h1{font-family:'Didot','Bodoni MT',Georgia,serif;font-size:17px;font-weight:700}
 .hd-sub{font-size:9px;color:var(--tm);font-weight:500;letter-spacing:.5px;text-transform:uppercase}
 .tabs{display:flex;background:var(--bg);border-radius:8px;border:1px solid var(--bd);overflow:hidden}
 .tab{padding:5px 12px;font-size:11px;font-weight:600;cursor:pointer;border:none;background:transparent;color:var(--tm);font-family:inherit;transition:.2s}
@@ -82,7 +82,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--tx);heigh
 .splash.hide{opacity:0;pointer-events:none}
 .splash img{width:min(260px,70vw)}
 .splash-name{font-family:'Didot','Bodoni MT',Georgia,serif;font-size:28px;font-weight:400;letter-spacing:2px;margin-top:-12px}
-.splash-name .sc{color:#7c3aed}.splash-name .sd{color:#0891b2}.splash-name .sl{color:#e11d48}
+.sp-civic{color:#7c3aed}.sp-data{color:#0891b2}.sp-live{color:#e11d48}
 .splash-sub{font-size:11px;color:#94a3b8;letter-spacing:3px;text-transform:uppercase;margin-top:8px}
 .custom-marker,.invest-marker,.ac-marker{background:none;border:none}
 .md{width:28px;height:28px;border-radius:50% 50% 50% 4px;transform:rotate(-45deg);display:flex;align-items:center;justify-content:center;box-shadow:0 2px 5px rgba(0,0,0,.25);cursor:pointer;border:2px solid #fff;transition:transform .12s}
@@ -114,11 +114,11 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--tx);heigh
 </style></head><body>
 <div class="splash" id="splash">
   <img src="logo.svg" alt="CivicData Live">
-  <div class="splash-name"><span class="sc">Civic</span><span class="sd">Data</span> <span class="sl">Live</span></div>
+  <div class="splash-name"><span class="sp-civic">Civic</span><span class="sp-data">Data</span> <span class="sp-live">Live</span></div>
   <div class="splash-sub">Municipiul Pașcani</div>
 </div>
 <script>window.addEventListener('load',function(){setTimeout(function(){var s=document.getElementById('splash');s.classList.add('hide');setTimeout(function(){s.remove()},700)},2000);});</script>
-<div class="hd"><div class="hd-l"><div class="logo"><img src="logo.svg" alt="CivicData Live" style="width:30px;height:30px;display:block"></div><div><h1>CivicData <span>Live</span></h1><div class="hd-sub">Investitia mea &#8226; Smart City &#8226; Colegiul Tehnic Unirea</div></div></div>
+<div class="hd"><div class="hd-l"><div class="logo"><img src="logo.svg" alt="CivicData Live" style="width:30px;height:30px;display:block"></div><div><h1><span class="sp-civic">Civic</span><span class="sp-data">Data</span> <span class="sp-live">Live</span></h1><div class="hd-sub">Investitia mea &#8226; Smart City &#8226; Colegiul Tehnic Unirea</div></div></div>
 <div style="display:flex;align-items:center;gap:8px"><div class="tabs"><button class="tab on" onclick="setMode('poi')">Locatii</button><button class="tab" onclick="setMode('invest')">Investitii</button><button class="tab" onclick="setMode('ac')">Autorizatii</button></div>
 <div class="pill"><span id="tc">0</span> loc &#8226; <span id="nc">0</span> inv &#8226; <span id="acc">0</span> AC</div></div></div>
 <div class="sb" id="sb">
