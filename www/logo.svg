@@ -1,0 +1,134 @@
+<svg width="100%" viewBox="180 10 320 320" xmlns="http://www.w3.org/2000/svg">
+<style>
+  @keyframes orbit1 { 0%{transform:rotate(0deg)} 100%{transform:rotate(360deg)} }
+  @keyframes orbit2 { 0%{transform:rotate(360deg)} 100%{transform:rotate(0deg)} }
+  @keyframes morph1 { 0%,100%{d:path('M310 80 Q370 60 390 110 Q410 160 360 170 Q310 180 290 140 Q270 100 310 80Z')} 50%{d:path('M315 75 Q380 55 400 115 Q415 170 355 178 Q300 186 280 135 Q265 95 315 75Z')} }
+  @keyframes morph2 { 0%,100%{d:path('M260 110 Q300 70 350 90 Q390 105 380 155 Q370 200 320 210 Q270 215 250 170 Q235 135 260 110Z')} 50%{d:path('M255 115 Q290 65 345 85 Q395 100 388 160 Q378 208 325 215 Q268 220 245 175 Q230 130 255 115Z')} }
+  @keyframes morph3 { 0%,100%{d:path('M330 95 Q380 80 400 130 Q415 175 370 195 Q325 210 305 170 Q285 130 330 95Z')} 50%{d:path('M335 90 Q388 75 408 125 Q422 178 375 200 Q330 216 308 175 Q288 125 335 90Z')} }
+  @keyframes breathe { 0%,100%{opacity:.6;r:3} 50%{opacity:1;r:5} }
+  @keyframes fadeScale { from{opacity:0;transform:scale(.92)} to{opacity:1;transform:scale(1)} }
+  @keyframes slideUp { from{opacity:0;transform:translateY(14px)} to{opacity:1;transform:translateY(0)} }
+  @keyframes ringPulse { 0%,100%{stroke-width:.8;opacity:.2} 50%{stroke-width:1.5;opacity:.45} }
+  @keyframes particleDrift { 0%{transform:translateY(0);opacity:.5} 50%{transform:translateY(-8px);opacity:.9} 100%{transform:translateY(0);opacity:.5} }
+
+  .m1 { animation: morph1 8s ease-in-out infinite; }
+  .m2 { animation: morph2 10s ease-in-out infinite; }
+  .m3 { animation: morph3 9s ease-in-out infinite; }
+  .orb1 { transform-origin: 340px 148px; animation: orbit1 25s linear infinite; }
+  .orb2 { transform-origin: 340px 148px; animation: orbit2 35s linear infinite; }
+  .br { animation: breathe 3s ease-in-out infinite; }
+  .br2 { animation: breathe 3s ease-in-out infinite .6s; }
+  .br3 { animation: breathe 3s ease-in-out infinite 1.2s; }
+  .br4 { animation: breathe 3s ease-in-out infinite 1.8s; }
+  .fs { animation: fadeScale .9s ease forwards; opacity:0; }
+  .su { animation: slideUp .7s ease forwards; opacity:0; }
+  .rp { animation: ringPulse 4s ease-in-out infinite; }
+  .rp2 { animation: ringPulse 4s ease-in-out infinite 1.3s; }
+  .rp3 { animation: ringPulse 4s ease-in-out infinite 2.6s; }
+  .pd { animation: particleDrift 4s ease-in-out infinite; }
+  .pd2 { animation: particleDrift 4.5s ease-in-out infinite .8s; }
+  .pd3 { animation: particleDrift 3.5s ease-in-out infinite 1.6s; }
+  .pd4 { animation: particleDrift 5s ease-in-out infinite 2.2s; }
+  .pd5 { animation: particleDrift 3.8s ease-in-out infinite .4s; }
+
+  .fs1{animation-delay:.1s} .fs2{animation-delay:.25s} .fs3{animation-delay:.4s}
+  .su1{animation-delay:.5s} .su2{animation-delay:.7s} .su3{animation-delay:.9s}
+  .su4{animation-delay:1.1s} .su5{animation-delay:1.3s}
+
+  @media(prefers-color-scheme:dark){
+    .canvas{fill:#ffffff}
+    .blob1{fill:#7c3aed;opacity:.18}
+    .blob2{fill:#0891b2;opacity:.14}
+    .blob3{fill:#e11d48;opacity:.1}
+    .ring-s{stroke:#7c3aed}
+    .ring-s2{stroke:#0891b2}
+    .ring-s3{stroke:#e11d48}
+    .orb-dot{fill:#e8e6e1}
+    .particle{fill:#7c3aed}
+    .particle2{fill:#0891b2}
+    .particle3{fill:#e11d48}
+    .center-dot{fill:#e8e6e1}
+    .center-ring{stroke:#e8e6e1}
+    .wm-c{fill:#a78bfa}
+    .wm-d{fill:#22d3ee}
+    .wm-l{fill:#fb7185}
+    .wm-dot{fill:#fb7185}
+    .sub-t{fill:#3f3f5e}
+    .tag-t{fill:#52525b}
+    .line-d{stroke:#1a1a2e}
+    .stat-v{fill:#e0dfd8}
+    .stat-a{fill:#a78bfa}
+    .stat-l{fill:#3f3f5e}
+    .sig-t{fill:#1e1e2e}
+  }
+  @media(prefers-color-scheme:light){
+    .canvas{fill:#fdfcfa}
+    .blob1{fill:#8b5cf6;opacity:.12}
+    .blob2{fill:#06b6d4;opacity:.1}
+    .blob3{fill:#f43f5e;opacity:.08}
+    .ring-s{stroke:#8b5cf6}
+    .ring-s2{stroke:#06b6d4}
+    .ring-s3{stroke:#f43f5e}
+    .orb-dot{fill:#1a1a2e}
+    .particle{fill:#8b5cf6}
+    .particle2{fill:#06b6d4}
+    .particle3{fill:#f43f5e}
+    .center-dot{fill:#1a1a2e}
+    .center-ring{stroke:#1a1a2e}
+    .wm-c{fill:#7c3aed}
+    .wm-d{fill:#0891b2}
+    .wm-l{fill:#e11d48}
+    .wm-dot{fill:#e11d48}
+    .sub-t{fill:#c4c4d4}
+    .tag-t{fill:#94a3b8}
+    .line-d{stroke:#e8e6e1}
+    .stat-v{fill:#1e293b}
+    .stat-a{fill:#7c3aed}
+    .stat-l{fill:#94a3b8}
+    .sig-t{fill:#e2e2da}
+  }
+</style>
+
+<rect class="canvas" x="180" y="10" width="320" height="320"/>
+
+<!-- ===== ABSTRACT COMPOSITION ===== -->
+<g class="fs fs1">
+  <path class="blob1 m1" d="M310 80 Q370 60 390 110 Q410 160 360 170 Q310 180 290 140 Q270 100 310 80Z"/>
+  <path class="blob2 m2" d="M260 110 Q300 70 350 90 Q390 105 380 155 Q370 200 320 210 Q270 215 250 170 Q235 135 260 110Z"/>
+  <path class="blob3 m3" d="M330 95 Q380 80 400 130 Q415 175 370 195 Q325 210 305 170 Q285 130 330 95Z"/>
+
+  <ellipse class="ring-s rp" cx="340" cy="148" rx="95" ry="60" fill="none" transform="rotate(-15 340 148)"/>
+  <ellipse class="ring-s2 rp2" cx="340" cy="148" rx="110" ry="45" fill="none" transform="rotate(25 340 148)"/>
+  <ellipse class="ring-s3 rp3" cx="340" cy="148" rx="80" ry="75" fill="none" transform="rotate(-40 340 148)"/>
+</g>
+
+<g class="fs fs2">
+  <g class="orb1">
+    <circle class="orb-dot br" cx="435" cy="148" r="3"/>
+    <circle class="orb-dot br3" cx="245" cy="148" r="2.5"/>
+  </g>
+  <g class="orb2">
+    <circle class="orb-dot br2" cx="340" cy="73" r="2"/>
+    <circle class="orb-dot br4" cx="340" cy="223" r="2.5"/>
+  </g>
+</g>
+
+<g class="fs fs2">
+  <circle class="particle pd" cx="220" cy="90" r="2" opacity=".5"/>
+  <circle class="particle2 pd2" cx="460" cy="100" r="1.8" opacity=".4"/>
+  <circle class="particle3 pd3" cx="250" cy="200" r="1.5" opacity=".5"/>
+  <circle class="particle pd4" cx="430" cy="195" r="2.2" opacity=".3"/>
+  <circle class="particle2 pd5" cx="380" cy="60" r="1.5" opacity=".4"/>
+  <circle class="particle3 pd" cx="300" cy="230" r="1.8" opacity=".3"/>
+  <circle class="particle pd2" cx="195" cy="150" r="1.3" opacity=".35"/>
+  <circle class="particle2 pd4" cx="485" cy="155" r="1.5" opacity=".3"/>
+</g>
+
+<g class="fs fs3">
+  <circle class="center-ring" cx="340" cy="148" r="12" fill="none" stroke-width="1.5" opacity=".3"/>
+  <circle class="center-ring" cx="340" cy="148" r="6" fill="none" stroke-width="1" opacity=".5"/>
+  <circle class="center-dot br" cx="340" cy="148" r="3.5"/>
+</g>
+
+
+</svg>

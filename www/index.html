@@ -11,7 +11,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--tx);heigh
 .hd{position:fixed;top:0;left:0;right:0;z-index:1000;background:var(--cd);border-bottom:1px solid var(--bd);padding:calc(8px + var(--sat)) 16px 8px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 1px 3px rgba(0,0,0,.08)}
 .hd-l{display:flex;align-items:center;gap:10px}
 .logo{width:36px;height:36px;display:flex;align-items:center;justify-content:center;font-size:28px}
-.hd h1{font-family:'Playfair Display',serif;font-size:17px;font-weight:700}.hd h1 span{color:var(--ac)}
+.hd h1{font-family:'Didot','Bodoni MT',Georgia,serif;font-size:17px;font-weight:700}.hd h1 span{color:#e11d48}
 .hd-sub{font-size:9px;color:var(--tm);font-weight:500;letter-spacing:.5px;text-transform:uppercase}
 .tabs{display:flex;background:var(--bg);border-radius:8px;border:1px solid var(--bd);overflow:hidden}
 .tab{padding:5px 12px;font-size:11px;font-weight:600;cursor:pointer;border:none;background:transparent;color:var(--tm);font-family:inherit;transition:.2s}
@@ -78,6 +78,12 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--tx);heigh
 .pf{padding:7px 14px 10px;border-top:1px solid var(--bd);display:flex;gap:5px;flex-wrap:wrap}
 .ppb{height:5px;background:#e2e8f0;border-radius:3px;overflow:hidden;margin:6px 0 2px}.ppf{height:100%;border-radius:3px}
 .ppt{display:flex;justify-content:space-between;font-size:9px;color:var(--tm)}
+.splash{position:fixed;inset:0;z-index:9999;background:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0;transition:opacity .6s ease}
+.splash.hide{opacity:0;pointer-events:none}
+.splash img{width:min(260px,70vw)}
+.splash-name{font-family:'Didot','Bodoni MT',Georgia,serif;font-size:28px;font-weight:400;letter-spacing:2px;margin-top:-12px}
+.splash-name .sc{color:#7c3aed}.splash-name .sd{color:#0891b2}.splash-name .sl{color:#e11d48}
+.splash-sub{font-size:11px;color:#94a3b8;letter-spacing:3px;text-transform:uppercase;margin-top:8px}
 .custom-marker,.invest-marker,.ac-marker{background:none;border:none}
 .md{width:28px;height:28px;border-radius:50% 50% 50% 4px;transform:rotate(-45deg);display:flex;align-items:center;justify-content:center;box-shadow:0 2px 5px rgba(0,0,0,.25);cursor:pointer;border:2px solid #fff;transition:transform .12s}
 .md:hover{transform:rotate(-45deg) scale(1.15)}.md .em{transform:rotate(45deg);font-size:12px}
@@ -106,7 +112,13 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--tx);heigh
 .kpi .kb{height:4px;background:#e2e8f0;border-radius:2px;margin-top:8px;overflow:hidden}.kpi .kbf{height:100%;border-radius:2px;background:linear-gradient(90deg,var(--g),var(--ac))}
 @media(max-width:768px){.sb{width:300px}.sbt{left:300px}.sb.hid+.sbt{left:0}.pill{display:none}.hd{padding:calc(6px + var(--sat)) 10px 6px;flex-wrap:wrap;gap:4px}.hd-l{gap:6px}.logo{width:30px;height:30px;font-size:14px}.hd h1{font-size:14px}.hd-sub{display:none}.tabs{order:3;width:100%;justify-content:center}.tab{padding:4px 10px;font-size:10px}.lgd{bottom:8px;gap:6px;padding:6px 10px;font-size:8px}.kpi{display:none!important}.bgr{grid-template-columns:1fr}}
 </style></head><body>
-<div class="hd"><div class="hd-l"><div class="logo">🏛️</div><div><h1>CivicData <span>Live</span></h1><div class="hd-sub">Investitia mea &#8226; Smart City &#8226; Colegiul Tehnic Unirea</div></div></div>
+<div class="splash" id="splash">
+  <img src="logo.svg" alt="CivicData Live">
+  <div class="splash-name"><span class="sc">Civic</span><span class="sd">Data</span> <span class="sl">Live</span></div>
+  <div class="splash-sub">Municipiul Pașcani</div>
+</div>
+<script>window.addEventListener('load',function(){setTimeout(function(){var s=document.getElementById('splash');s.classList.add('hide');setTimeout(function(){s.remove()},700)},2000);});</script>
+<div class="hd"><div class="hd-l"><div class="logo"><img src="logo.svg" alt="CivicData Live" style="width:30px;height:30px;display:block"></div><div><h1>CivicData <span>Live</span></h1><div class="hd-sub">Investitia mea &#8226; Smart City &#8226; Colegiul Tehnic Unirea</div></div></div>
 <div style="display:flex;align-items:center;gap:8px"><div class="tabs"><button class="tab on" onclick="setMode('poi')">Locatii</button><button class="tab" onclick="setMode('invest')">Investitii</button><button class="tab" onclick="setMode('ac')">Autorizatii</button></div>
 <div class="pill"><span id="tc">0</span> loc &#8226; <span id="nc">0</span> inv &#8226; <span id="acc">0</span> AC</div></div></div>
 <div class="sb" id="sb">
@@ -117,7 +129,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--tx);heigh
 <button class="lb on" id="bB" onclick="togB()"><span class="dot" style="background:#2563eb"></span>&#128205; Locatii<span class="sub" id="bBs">0</span></button>
 <button class="lb" id="bI" onclick="togI()"><span class="dot" style="background:#16a34a"></span>&#128176; Investitii publice<span class="sub" id="bIs">Click pt activare</span></button>
 <button class="lb" id="bA" onclick="togA()"><span class="dot" style="background:#7c3aed"></span>&#127959; Autorizatii construire<span class="sub" id="bAs">Click pt activare</span></button>
-<button class="lb" id="bH" onclick="togH()"><span class="dot" style="background:#dc2626"></span>&#128293; Harta caldura<span class="sub" id="bHs">Click pt activare</span></button>
+<button class="lb" id="bH" onclick="togH()"><span class="dot" style="background:#dc2626"></span>&#128293; Reabilitare termică clădiri<span class="sub" id="bHs">Click pt activare</span></button>
 <button class="lb" id="bS" onclick="togS()"><span class="dot" style="background:#94a3b8"></span>&#128739;&#65039; Strazi<span class="sub" id="bSs">Click pt activare</span></button></div>
 <div class="pane" id="pPoi"></div><div class="pane" id="pInv" style="display:none"></div>
 <div id="pAc" style="display:none"><div class="cha" id="chartArea"></div><div class="tiv" id="topInv"></div><div class="stp" id="stPanel"></div><div class="pane" id="acList"></div></div>
