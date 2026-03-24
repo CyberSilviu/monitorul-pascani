@@ -381,10 +381,11 @@ return`<div><div class="ph"><div class="pc" style="color:${ci.color||'#64748b'}"
 <div style="font-size:10px;color:var(--tm);margin-top:4px;line-height:1.3">${a.ds}</div>
 </div><div class="pf"><span class="tg" style="background:${ci.color||'#64748b'}20;color:${ci.color||'#64748b'}">${a.c}</span><span class="tg tg-p">An ${a.a}</span></div></div>`;}
 
+function normSt(s){return(s||'').toLowerCase().replace(/^(strada|str.|bulevardul|bd.|calea|aleea|piata|intrarea|fundatura)s+/i,'').trim();}
 function popSt(tags){const nm=tags.name||'Fara denumire';
-const stName=nm.toLowerCase();
-const acMatch=AC.filter(a=>a.st.toLowerCase().includes(stName)||a.ad.toLowerCase().includes(stName));
-const invMatch=INV.filter(i=>(i.a||'').toLowerCase().includes(stName)||i.n.toLowerCase().includes(stName));
+const stName=normSt(nm);
+const acMatch=AC.filter(a=>{const ast=normSt(a.st),aad=normSt(a.ad);return(ast&&(stName.includes(ast)||ast.includes(stName)))||(aad&&aad.includes(stName));});
+const invMatch=INV.filter(i=>{const ia=normSt(i.a);return ia&&(ia.includes(stName)||stName.includes(ia));})
 let info='';
 const totalAC=acMatch.reduce((s,a)=>s+a.v,0);
 const totalINV=invMatch.reduce((s,i)=>s+i.buget,0);
