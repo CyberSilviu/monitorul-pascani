@@ -7,6 +7,7 @@ const iconSvg = `<svg width="1024" height="1024" viewBox="0 0 1024 1024" xmlns="
   <!-- Background -->
   <rect width="1024" height="1024" rx="0" fill="#ffffff"/>
 
+  <g transform="translate(0, 62)">
   <!-- Blobs -->
   <path d="M512 280 Q680 220 720 360 Q760 500 640 530 Q520 560 470 450 Q420 340 512 280Z" fill="#8b5cf6" opacity="0.18"/>
   <path d="M400 350 Q480 250 590 300 Q690 345 670 480 Q650 605 540 620 Q420 635 390 520 Q360 410 400 350Z" fill="#06b6d4" opacity="0.14"/>
@@ -34,6 +35,7 @@ const iconSvg = `<svg width="1024" height="1024" viewBox="0 0 1024 1024" xmlns="
   <circle cx="512" cy="450" r="42" fill="none" stroke="#1a1a2e" stroke-width="4" opacity="0.25"/>
   <circle cx="512" cy="450" r="22" fill="none" stroke="#1a1a2e" stroke-width="2.5" opacity="0.45"/>
   <circle cx="512" cy="450" r="11" fill="#1a1a2e" opacity="0.7"/>
+  </g>
 
 </svg>`;
 
