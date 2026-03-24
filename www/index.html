@@ -349,7 +349,7 @@ const mks=[],iMks=[],aMks=[],hCirc=[];let sLayer=null,sLoaded=false,sData=null;
 const map=L.map('map',{center:[47.2505,26.7210],zoom:15,zoomControl:false});
 L.control.zoom({position:'topright'}).addTo(map);
 L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png',{attribution:'&copy; OSM &copy; CARTO',subdomains:'abcd',maxZoom:19}).addTo(map);
-L.polygon([[47.2446881,26.7156543],[47.2435418,26.7161637],[47.2429492,26.7133066],[47.2450035,26.7123915],[47.2450587,26.7126301],[47.2457652,26.7123021],[47.2458848,26.7128198],[47.2451838,26.7131423],[47.2455831,26.7151777],[47.2455113,26.7152130],[47.2451801,26.7135624],[47.2443338,26.7139446]],{color:'#b45309',weight:2,fillColor:'#b45309',fillOpacity:0.15}).addTo(map).bindTooltip('DEDEMAN',{permanent:false,direction:'center'});
+L.polygon([[47.2446881,26.7156543],[47.2435418,26.7161637],[47.2429492,26.7133066],[47.2450035,26.7123915],[47.2450587,26.7126301],[47.2457652,26.7123021],[47.2458848,26.7128198],[47.2451838,26.7131423],[47.2455831,26.7151777],[47.2455113,26.7152130],[47.2451801,26.7135624],[47.2443338,26.7139446]],{color:'#c8bfb5',weight:1,fillColor:'#ddd8d0',fillOpacity:0.75,interactive:false}).addTo(map);
 function fixLayout(){const h=document.querySelector('.hd').offsetHeight;document.documentElement.style.setProperty('--hh',h+'px');map.invalidateSize();}
 setTimeout(fixLayout,100);
 window.addEventListener('resize',fixLayout);
