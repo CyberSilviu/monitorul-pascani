@@ -1,0 +1,91 @@
+{
+  "proiect": {
+    "denumire": "Statii de reincarcare pentru vehicule electrice in Municipiul Pascani, Judetul Iasi",
+    "proiectant": "CRISBO COMPANY",
+    "verificator": "ing. Galatanu V. Ciprian (Nr. 10164)",
+    "nr_proiect": "34/2023",
+    "faza": "P.Th."
+  },
+  "contract_finantare": {
+    "numar": "368/GES",
+    "data": "20.12.2023",
+    "finantator": {
+      "denumire": "Administratia Fondului pentru Mediu (AFM)",
+      "adresa": "Splaiul Independentei nr. 294, corp A, sector 6, Bucuresti",
+      "cif": "14715650",
+      "reprezentant": "Laurentiu Adrian Neculaescu - presedinte"
+    },
+    "beneficiar": {
+      "denumire": "Municipiul Pascani",
+      "adresa": "Str. Gradinitei nr. 16, jud. Iasi",
+      "cif": "4541360",
+      "cont_trezorerie": "RO08TREZ40721A434400XXXX - Trezoreria Pascani",
+      "reprezentant": "Primar Pintilie Marius-Nicolae"
+    }
+  },
+  "financiar": {
+    "valoare_totala": 2020381.20,
+    "finantare_afm": 1612283.71,
+    "buget_local_diferenta": 408097.49,
+    "sursa_afm": "100% cheltuieli eligibile, nerambursabila"
+  },
+  "numar_statii": 9,
+  "statii": [
+    {
+      "nr": "1",
+      "locatie": "Zona parcare Piata agroalimentara",
+      "acces_din": "Str. Ceferistilor",
+      "carte_funciara": "64894",
+      "lat": 47.255835,
+      "lng": 26.719966
+    },
+    {
+      "nr": "3 si 2 (grupate)",
+      "locatie": "Parcare la intrare biserica Sf. Vineri",
+      "acces_din": "Str. Ceferistilor",
+      "carte_funciara": "65319",
+      "lat": 47.255565,
+      "lng": 26.718994
+    },
+    {
+      "nr": "4",
+      "locatie": "Parcare zona bloc D1-2",
+      "acces_din": "Str. Cuza Voda",
+      "carte_funciara": "61489",
+      "lat": 47.251633,
+      "lng": 26.722436
+    },
+    {
+      "nr": "5",
+      "locatie": "Intersectia Str. 1 Decembrie 1918 cu Str. Mihai Eminescu",
+      "acces_din": "Str. Mihai Eminescu",
+      "carte_funciara": "65391",
+      "lat": 47.250039,
+      "lng": 26.724746
+    },
+    {
+      "nr": "6 si 7",
+      "locatie": "Zona acces S.C. PROINVEST S.R.L.",
+      "acces_din": "Str. Gradinitei",
+      "carte_funciara": "65239",
+      "lat": 47.246135,
+      "lng": 26.734559
+    },
+    {
+      "nr": "8",
+      "locatie": "Zona acces Kaufland",
+      "acces_din": "Str. Moldovei",
+      "carte_funciara": "65208",
+      "lat": 47.247288,
+      "lng": 26.708866
+    },
+    {
+      "nr": "9",
+      "locatie": "Zona acces Primaria Veche",
+      "acces_din": "Str. Stefan cel Mare nr. 7",
+      "carte_funciara": "64888",
+      "lat": 47.247989,
+      "lng": 26.723159
+    }
+  ]
+}
