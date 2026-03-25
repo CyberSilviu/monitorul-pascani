@@ -399,7 +399,7 @@ return`<div><div class="ph"><div class="pc" style="color:${c}">${i.cat} \u2022 $
 <div style="font-size:10px;color:var(--tm);margin-top:5px;line-height:1.3">${i.desc}</div>
 </div><div class="pf"><span class="tg ${sT(i.stadiu)}">${sL(i.stadiu)}</span></div></div>`;}
 
-function cleanInv(s){return(s||'').replace(/\s+(prin|pentru\.?|pt\s).*/i,'').trim();}
+function cleanInv(s){return(s||'').replace(/\s+(prin|pentru\.?|pt\s|repr\.?(\s*(prin|de|al))?|reprezent\w*\s*(de|prin)?).*/i,'').trim();}
 function popAc(a){const ci=ACC[a.c]||{};
 return`<div><div class="ph"><div class="pc" style="color:${ci.color||'#64748b'}">${a.c}</div><div class="pt">${ci.icon||'\u{1F4CB}'} AC ${a.nr}/${a.dt}</div></div>
 <div class="pb"><div class="pr"><span class="l">Valoare</span><span class="v" style="color:var(--g)">${a.v?fR(a.v)+' RON':'N/A'}</span></div>
