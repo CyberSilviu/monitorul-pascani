@@ -180,7 +180,7 @@ Font utilizat în întreaga aplicație: **Didot / Bodoni MT / Georgia** (serif e
 
 ## Cine a construit acest proiect?
 
-Proiect inițiat și coordonat de **Silviu**, cu scopul de a pune informațiile publice despre Municipiul Pășcani la îndemâna tuturor cetățenilor, într-un format vizual, ușor de înțeles și accesibil pe orice dispozitiv.
+Proiect inițiat și coordonat de **Colegiul Tehnic de Căi Ferate "Unirea" Pașcani**, cu scopul de a pune informațiile publice despre Municipiul Pășcani la îndemâna tuturor cetățenilor, într-un format vizual, ușor de înțeles și accesibil pe orice dispozitiv.
 
 Dezvoltat cu ajutorul **Claude (Anthropic)** – asistent AI utilizat pentru scrierea și gestionarea codului, procesarea datelor din PDF-uri și JSON-uri, și implementarea funcționalităților hărții.
 
