@@ -1,189 +1,203 @@
 const fs = require('fs');
 
+// IMPORTANT: Return values must NEVER contain regular ASCII double-quotes (")
+// because ds values are stored inside "ds":"..." in the JS source.
+// Use typographic quotes like «» or simply omit them.
 function humanize(ds) {
   const d = (ds || '').toUpperCase();
 
   // Gaze naturale
-  if (/INLOCUIRE CONDUCTA SI BRANSAMENTE PRM/.test(d)) return 'Înlocuire conducte și branșamente gaze naturale între stații de reglare';
-  if (/SISTEM DE PROTECTIE CATODICA.*GAZ/.test(d)) return 'Instalare sistem de protecție catodică pentru rețeaua de gaze naturale';
-  if (/INLOCUIRE CONDUCTE DISTRIBUTIE GAZE NATURALE PRESIUNE MEDIE/.test(d)) return 'Înlocuire conducte gaze naturale la presiune medie';
-  if (/INLOCUIRE.*CONDUCTA.*GAZ/.test(d)) return 'Înlocuire conducte gaze naturale';
-  if (/EXTINDERE CONDUCTA.*GAZ|EXTINDERE.*BRANSAMENT.*GAZ|EXTINDERE.*GAZ.*BRANSAMENT/.test(d)) return 'Extindere rețea gaze naturale și branșament la imobil';
-  if (/EXTINDERE RETEA DE GAZE NATURALE/.test(d)) return 'Extindere rețea de distribuție gaze naturale';
-  if (/MODERNIZARE SRM/.test(d)) return 'Modernizare stație de reglare-măsurare gaze naturale';
-  if (/SUBTRAVERSARE LINIE CF/.test(d)) return 'Traversare subterană a căii ferate pentru rețele utilitare';
+  if (/INLOCUIRE CONDUCTA SI BRANSAMENTE PRM/.test(d)) return 'Inlocuire conducte si bransamente gaze naturale intre statii de reglare';
+  if (/SISTEM DE PROTECTIE CATODICA.*GAZ/.test(d)) return 'Instalare sistem de protectie catodica pentru reteaua de gaze naturale';
+  if (/INLOCUIRE CONDUCTE DISTRIBUTIE GAZE NATURALE PRESIUNE MEDIE/.test(d)) return 'Inlocuire conducte gaze naturale la presiune medie';
+  if (/INLOCUIRE.*CONDUCTA.*GAZ/.test(d)) return 'Inlocuire conducte gaze naturale';
+  if (/EXTINDERE CONDUCTA.*GAZ|EXTINDERE.*BRANSAMENT.*GAZ|EXTINDERE.*GAZ.*BRANSAMENT/.test(d)) return 'Extindere retea gaze naturale si bransament la imobil';
+  if (/EXTINDERE RETEA DE GAZE NATURALE/.test(d)) return 'Extindere retea de distributie gaze naturale';
+  if (/MODERNIZARE SRM/.test(d)) return 'Modernizare statie de reglare-masurare gaze naturale';
+  if (/SUBTRAVERSARE LINIE CF/.test(d)) return 'Traversare subterana a caii ferate pentru retele utilitare';
 
-  // Energie electrică
-  if (/SPATII DE REINCARCARE PENTRU VEHICULE ELECTRICE/.test(d)) return 'Instalare stație de încărcare vehicule electrice';
-  if (/ALIMENTARE CU ENERGIE ELECTRICA.*HALA|ALIMENTARE.*ELECTRICA.*HALA/.test(d)) return 'Racordare electrică hală industrială';
-  if (/ALIMENTARE CU ENERGIE ELECTRICA.*FARMACEUTICE/.test(d)) return 'Racordare electrică hală de producție farmaceutică';
-  if (/ALIMENTARE CU ENERGIE ELECTRICA.*STATIA DE BETOANE/.test(d)) return 'Racordare electrică stație de betoane';
-  if (/ALIMENTARE CU ENERGIE ELECTRICA.*LOCUINTE COLECTIVE/.test(d)) return 'Racordare electrică bloc de locuințe';
-  if (/ALIMENTARE CU ENERGIE ELECTRICA.*CENTRU DE ZI/.test(d)) return 'Racordare electrică centru de zi';
-  if (/ALIMENTARE CU ENERGIE ELECTRICA/.test(d)) return 'Racordare la rețeaua de energie electrică';
-  if (/RACORDARE.*RETEAUA ELECTRICA.*BAZIN IRIGATII/.test(d)) return 'Racordare electrică bazin de irigații';
-  if (/RACORDARE.*RETEAUA ELECTRICA.*CJ\.EE RUGINOASA/.test(d) || /RACORDARE.*RETEAUA ELECTRICA.*RUGINOASA/.test(d)) return 'Racordare la rețeaua electrică a centralei eoliene Ruginoasa';
-  if (/RACORDARE.*RETEAUA ELECTRICA/.test(d)) return 'Racordare la rețeaua de energie electrică';
-  if (/INLOCUIRE.*LES.*20KV/.test(d)) return 'Înlocuire cablu electric subteran 20kV';
-  if (/LUCRARI ELECTRICE.*COEXISTENTA|LUCRARI DE COEXISTENTA RETELE/.test(d)) return 'Lucrări electrice de coexistență cu alte rețele';
-  if (/EXTINDERE RETEA ENERGIE ELECTRICA|EXTINDERE.*RETEA.*ELECTRICA/.test(d)) return 'Extindere rețea de energie electrică';
+  // Energie electrica
+  if (/SPATII DE REINCARCARE PENTRU VEHICULE ELECTRICE/.test(d)) return 'Instalare statie de incarcare vehicule electrice';
+  if (/ALIMENTARE CU ENERGIE ELECTRICA.*HALA|ALIMENTARE.*ELECTRICA.*HALA/.test(d)) return 'Racordare electrica hala industriala';
+  if (/ALIMENTARE CU ENERGIE ELECTRICA.*FARMACEUTICE/.test(d)) return 'Racordare electrica hala de productie farmaceutica';
+  if (/ALIMENTARE CU ENERGIE ELECTRICA.*STATIA DE BETOANE/.test(d)) return 'Racordare electrica statie de betoane';
+  if (/ALIMENTARE CU ENERGIE ELECTRICA.*LOCUINTE COLECTIVE/.test(d)) return 'Racordare electrica bloc de locuinte';
+  if (/ALIMENTARE CU ENERGIE ELECTRICA.*CENTRU DE ZI/.test(d)) return 'Racordare electrica centru de zi';
+  if (/ALIMENTARE CU ENERGIE ELECTRICA/.test(d)) return 'Racordare la reteaua de energie electrica';
+  if (/RACORDARE.*RETEAUA ELECTRICA.*BAZIN IRIGATII/.test(d)) return 'Racordare electrica bazin de irigatii';
+  if (/RACORDARE.*RETEAUA ELECTRICA.*RUGINOASA/.test(d)) return 'Racordare la reteaua electrica a obiectivului Ruginoasa';
+  if (/RACORDARE.*RETEAUA ELECTRICA/.test(d)) return 'Racordare la reteaua de energie electrica';
+  if (/INLOCUIRE.*LES.*20KV/.test(d)) return 'Inlocuire cablu electric subteran 20kV';
+  if (/LUCRARI ELECTRICE.*COEXISTENTA|LUCRARI DE COEXISTENTA RETELE/.test(d)) return 'Lucrari electrice de coexistenta cu alte retele';
+  if (/EXTINDERE RETEA ENERGIE ELECTRICA|EXTINDERE.*RETEA.*ELECTRICA/.test(d)) return 'Extindere retea de energie electrica';
   if (/CRESTEREA EFICIENTEI ENERGETICE.*ILUMINAT PUBLIC|CRESTEREA EFICIENTEI ENERGETICE.*SISTEM DE ILUMINAT/.test(d)) return 'Modernizare sistem de iluminat public stradal';
-  if (/LUCRARI DE MODERNIZARE SI EXTINDERE A SISTEMULUI DE ILUMINAT STRADAL/.test(d)) return 'Modernizare și extindere iluminat stradal';
+  if (/LUCRARI DE MODERNIZARE SI EXTINDERE A SISTEMULUI DE ILUMINAT STRADAL/.test(d)) return 'Modernizare si extindere iluminat stradal';
 
-  // Apă
-  if (/EXTINDERE RETEA DISTRIBUTIE APA/.test(d)) return 'Extindere rețea de distribuție apă';
-  if (/BRANSAMENT SI ALIMENTARE CU APA PRIN SUBTRAVERSARE/.test(d)) return 'Branșament apă prin traversare subterană';
-  if (/CONSTRUIRE BAZIN IRIGATII.*RETEA ALIMENTARE/.test(d)) return 'Construire bazin de irigații și rețea de alimentare cu apă';
-  if (/AMENAJARE PRIZA DE APA.*IRIGATII/.test(d)) return 'Amenajare priză de apă pentru sistem de irigații';
+  // Apa
+  if (/EXTINDERE RETEA DISTRIBUTIE APA/.test(d)) return 'Extindere retea de distributie apa';
+  if (/BRANSAMENT SI ALIMENTARE CU APA PRIN SUBTRAVERSARE/.test(d)) return 'Bransament apa prin traversare subterana';
+  if (/CONSTRUIRE BAZIN IRIGATII.*RETEA ALIMENTARE/.test(d)) return 'Construire bazin de irigatii si retea de alimentare cu apa';
+  if (/AMENAJARE PRIZA DE APA.*IRIGATII/.test(d)) return 'Amenajare priza de apa pentru sistem de irigatii';
 
-  // Telecomunicații / fibră optică
-  if (/CONSTRUIRE RETEA FIXA TELECOMUNICATII FTTH.*ORANGE/.test(d)) return 'Instalare rețea fixă de telecomunicații fibră optică (Orange)';
-  if (/INSTALARE RETEA AERIANA FIBRA OPTICA/.test(d)) return 'Instalare rețea aeriană de fibră optică';
-  if (/FIBRA OPTIC/.test(d)) return 'Instalare rețea de telecomunicații fibră optică';
-  if (/STATIE DE BAZA PENTRU SERVICII DE COMUNICATII/.test(d)) return 'Amplasare antenă și stație de bază telecomunicații mobile';
-  if (/AMPLASARE PLATFORMA BETONATA ANTENA/.test(d)) return 'Amplasare platformă betonată pentru antenă telecomunicații';
+  // Telecomunicatii / fibra optica
+  if (/CONSTRUIRE RETEA FIXA TELECOMUNICATII FTTH.*ORANGE/.test(d)) return 'Instalare retea fixa de telecomunicatii fibra optica (Orange)';
+  if (/INSTALARE RETEA AERIANA FIBRA OPTICA/.test(d)) return 'Instalare retea aeriana de fibra optica';
+  if (/FIBRA OPTIC/.test(d)) return 'Instalare retea de telecomunicatii fibra optica';
+  if (/STATIE DE BAZA PENTRU SERVICII DE COMUNICATII/.test(d)) return 'Amplasare antena si statie de baza telecomunicatii mobile';
+  if (/AMPLASARE PLATFORMA BETONATA ANTENA/.test(d)) return 'Amplasare platforma betonata pentru antena telecomunicatii';
 
-  // Eficiență energetică clădiri
-  if (/CRESTEREA EFICIENTEI ENERGETICE.*SCOALA.*IORDACHE CANTACUZINO/.test(d)) return 'Creșterea eficienței energetice a Școlii „Iordache Cantacuzino"';
-  if (/CRESTEREA EFICIENTEI ENERGETICE.*GRADINITA NR\.? ?2|CRESTEREA EFICIENTEI ENERGETICE.*GRADINITA.*CRESA/.test(d)) return 'Creșterea eficienței energetice a Grădiniței nr. 2 și Creșei nr. 1';
-  if (/CRESTEREA EFICIENTEI ENERGETICE.*GRADINITA/.test(d)) return 'Creșterea eficienței energetice a grădiniței';
-  if (/CRESTEREA EFICIENTEI ENERGETICE.*LICEU/.test(d)) return 'Creșterea eficienței energetice a liceului';
-  if (/CRESTEREA EFICIENTEI ENERGETICE.*CLADIRI REZIDENTIALE/.test(d)) return 'Eficientizare energetică blocuri de locuințe (finanțare PNRR)';
-  if (/CRESTEREA EFICIENTEI ENERGETICE/.test(d)) return 'Creșterea eficienței energetice a clădirii';
-  if (/RENOVARE ENERGETICA.*COLEGIUL TEHNIC UNIREA/.test(d)) return 'Renovare energetică Colegiul Tehnic „Unirea"';
-  if (/RENOVARE ENERGETICA.*LICEUL.*MIRON COSTIN/.test(d)) return 'Renovare energetică Liceul Teoretic „Miron Costin"';
-  if (/RENOVARE ENERGETICA.*SCOALA.*GASTESTI/.test(d)) return 'Renovare energetică Școala Gâștești';
-  if (/RENOVARE ENERGETICA/.test(d)) return 'Renovare energetică clădire';
-  if (/REVITALIZAREA MUNICIPIULUI PASCANI.*EDUCATIONALA/.test(d)) return 'Revitalizare infrastructură educațională și de transport Pașcani';
+  // Eficienta energetica cladiri
+  if (/CRESTEREA EFICIENTEI ENERGETICE.*SCOALA.*IORDACHE CANTACUZINO/.test(d)) return 'Cresterea eficientei energetice a Scolii Iordache Cantacuzino';
+  if (/CRESTEREA EFICIENTEI ENERGETICE.*GRADINITA NR\.? ?2|CRESTEREA EFICIENTEI ENERGETICE.*GRADINITA.*CRESA/.test(d)) return 'Cresterea eficientei energetice a Gradinitei nr. 2 si Cresei nr. 1';
+  if (/CRESTEREA EFICIENTEI ENERGETICE.*GRADINITA/.test(d)) return 'Cresterea eficientei energetice a gradinitei';
+  if (/CRESTEREA EFICIENTEI ENERGETICE.*LICEU/.test(d)) return 'Cresterea eficientei energetice a liceului';
+  if (/CRESTEREA EFICIENTEI ENERGETICE.*CLADIRI REZIDENTIALE/.test(d)) return 'Eficientizare energetica blocuri de locuinte (finantare PNRR)';
+  if (/CRESTEREA EFICIENTEI ENERGETICE/.test(d)) return 'Cresterea eficientei energetice a cladirii';
+  if (/RENOVARE ENERGETICA.*COLEGIUL TEHNIC UNIREA/.test(d)) return 'Renovare energetica Colegiul Tehnic Unirea';
+  if (/RENOVARE ENERGETICA.*LICEUL.*MIRON COSTIN/.test(d)) return 'Renovare energetica Liceul Teoretic Miron Costin';
+  if (/RENOVARE ENERGETICA.*SCOALA.*GASTESTI/.test(d)) return 'Renovare energetica Scoala Gastesti';
+  if (/RENOVARE ENERGETICA/.test(d)) return 'Renovare energetica cladire';
+  if (/REVITALIZAREA MUNICIPIULUI PASCANI.*EDUCATIONALA/.test(d)) return 'Revitalizare infrastructura educationala si de transport Pascani';
 
-  // Stradă / mobilitate
+  // Strada / mobilitate
   if (/MODERNIZARE STR(ADA)?[\. ]+(VASILE ALECSANDRI)/.test(d)) return 'Modernizare Strada Vasile Alecsandri';
   if (/MODERNIZARE STR(ADA)?[\. ]+/.test(d)) {
-    const m = d.match(/MODERNIZARE STR(?:ADA)?[\. ]+([A-ZĂÎÂȘȚ0-9 ]+?)(?:,|\s+MUN|\s+JUD|\s+PASCANI|$)/);
-    if (m) return `Modernizare strada ${m[1].trim().charAt(0) + m[1].trim().slice(1).toLowerCase()}`;
-    return 'Modernizare stradă';
+    const m = d.match(/MODERNIZARE STR(?:ADA)?[\. ]+([A-Z0-9 ]+?)(?:,|\s+MUN|\s+JUD|\s+PASCANI|$)/);
+    if (m) {
+      const name = m[1].trim().charAt(0) + m[1].trim().slice(1).toLowerCase();
+      return 'Modernizare strada ' + name;
+    }
+    return 'Modernizare strada';
   }
   if (/AMENAJARE.*SENS(URI)? GIRA/.test(d)) return 'Amenajare sensuri giratorii provizorii pentru reglementarea traficului';
-  if (/AMENAJARE SENS GIRATORIU.*ACCESE RUTIERE/.test(d)) return 'Amenajare sens giratoriu, accese rutiere și trotuare pietonale';
-  if (/STR\. OITUZ|TRONSON.*MARASESTI.*RIPA GALBENA/.test(d)) return 'Reabilitare Strada Oituz (tronson Mărășești – Ripa Galbenă)';
-  if (/REGULARIZARE.*ALBIE.*MINORA/.test(d)) return 'Decolmatare, regularizare și reprofilare albie râu — exploatare agregate';
+  if (/AMENAJARE SENS GIRATORIU.*ACCESE RUTIERE/.test(d)) return 'Amenajare sens giratoriu, accese rutiere si trotuare pietonale';
+  if (/STR\. OITUZ|TRONSON.*MARASESTI.*RIPA GALBENA/.test(d)) return 'Reabilitare Strada Oituz (tronson Marasesti - Ripa Galbena)';
+  if (/REGULARIZARE.*ALBIE.*MINORA/.test(d)) return 'Decolmatare, regularizare si reprofilare albie rau';
 
-  // Patrimoniu / cultură
-  if (/REABILITARE.*PALATUL CANTACUZINO/.test(d)) return 'Reabilitare, conservare și revitalizare Palatul Cantacuzino-Pașcanu';
-  if (/CONSTR.*CATEDRALA ORTODOXA|CATEDRALA ORTODOXA/.test(d)) return 'Construire Catedrala Ortodoxă „Pogorârea Duhului Sfânt" Pașcani';
+  // Patrimoniu / cultura
+  if (/REABILITARE.*PALATUL CANTACUZINO|REABILITARE.*CONSERVARE.*PALAT/.test(d)) return 'Reabilitare, conservare si revitalizare Palatul Cantacuzino-Pascanu';
+  if (/CONSTR.*CATEDRALA ORTODOXA|CATEDRALA ORTODOXA/.test(d)) return 'Construire Catedrala Ortodoxa Pogorarea Duhului Sfant Pascani';
 
-  // Sănătate
-  if (/EXTINDERE.*DOTARE.*AMBULATORIU.*SPITAL/.test(d)) return 'Extindere și dotare ambulatoriu integrat Spitalul Municipal Pașcani';
-  if (/CONSTR.*CENTRU DIALIZA/.test(d)) return 'Construire centru de dializă și locuință';
-  if (/SCHIMBARE DESTINATIE.*SPATIU MEDICAL|SCHIMBARE DESTINATIE.*SPATIU.*UNITATI SANITARE/.test(d)) return 'Transformare spațiu comercial în cabinet medical';
-  if (/MODIFICARE.*EXTINDERE.*MANSARDA.*SPATIU.*UNITATI SANITARE/.test(d)) return 'Extindere mansardă și transformare în unitate sanitară cu paturi';
+  // Sanatate
+  if (/EXTINDERE.*DOTARE.*AMBULATORIU.*SPITAL/.test(d)) return 'Extindere si dotare ambulatoriu integrat Spitalul Municipal Pascani';
+  if (/CONSTR.*CENTRU DIALIZA/.test(d)) return 'Construire centru de dializa si locuinta';
+  if (/SCHIMBARE DESTINATIE.*SPATIU MEDICAL|SCHIMBARE DESTINATIE.*SPATIU.*UNITATI SANITARE/.test(d)) return 'Transformare spatiu comercial in cabinet medical';
+  if (/MODIFICARE.*EXTINDERE.*MANSARDA.*SPATIU.*UNITATI SANITARE/.test(d)) return 'Extindere mansarda si transformare in unitate sanitara cu paturi';
 
-  // Educație / social
-  if (/CONSTRUIRE BAZIN DE INOT DIDACTIC/.test(d)) return 'Construire bazin de înot didactic';
-  if (/REABILITARE.*CENTRU REZIDENTIAL.*SF\. STELIAN|SCHIMBARE DESTINATIE.*SF\. STELIAN/.test(d)) return 'Transformare Centru Rezidențial Sf. Stelian în centru de zi';
-  if (/CONSTRUIRE.*DOTARE.*CASA TIP FAMILIAL CTF1/.test(d)) return 'Construire casă de tip familial CTF1 (dezinstituționalizare Sf. Nicolae)';
-  if (/CONSTRUIRE.*DOTARE.*CASA TIP FAMILIAL CTF2/.test(d)) return 'Construire casă de tip familial CTF2 (dezinstituționalizare Sf. Nicolae)';
-  if (/REABILITARE.*GRADINITA.*SPERANTA|GRADINITA.*CENTRU DE ZI.*SPERANTA/.test(d)) return 'Reabilitare Grădinița „Speranța" și transformare în centru de zi pentru copii cu dizabilități';
-  if (/CONSTR.*CASA.*TIP FAMILIAL/.test(d)) return 'Construire casă de tip familial pentru persoane vulnerabile';
+  // Educatie / social
+  if (/CONSTRUIRE BAZIN DE INOT DIDACTIC/.test(d)) return 'Construire bazin de inot didactic';
+  if (/REABILITARE.*CENTRU REZIDENTIAL.*SF\. STELIAN|SCHIMBARE DESTINATIE.*SF\. STELIAN/.test(d)) return 'Transformare Centru Rezidential Sf. Stelian in centru de zi';
+  if (/CONSTRUIRE.*DOTARE.*CASA TIP FAMILIAL CTF1/.test(d)) return 'Construire casa de tip familial CTF1 (dezinstitutionalizare Sf. Nicolae)';
+  if (/CONSTRUIRE.*DOTARE.*CASA TIP FAMILIAL CTF2/.test(d)) return 'Construire casa de tip familial CTF2 (dezinstitutionalizare Sf. Nicolae)';
+  if (/REABILITARE.*GRADINITA.*SPERANTA|GRADINITA.*CENTRU DE ZI.*SPERANTA/.test(d)) return 'Reabilitare Gradinita Speranta si transformare in centru de zi pentru copii cu dizabilitati';
+  if (/CONSTR.*CASA.*TIP FAMILIAL/.test(d)) return 'Construire casa de tip familial pentru persoane vulnerabile';
   if (/AMENAJARE CIMITIR/.test(d)) return 'Amenajare cimitir municipal';
   if (/TOALETE PUBLICE ECOLOGICE/.test(d)) return 'Amplasare toalete publice ecologice';
-  if (/AMENAJARE PARC DE JOACA/.test(d)) return 'Amenajare parc de joacă pentru copii';
+  if (/AMENAJARE PARC DE JOACA/.test(d)) return 'Amenajare parc de joaca pentru copii';
   if (/AMENAJARE TERENURI SPORTIVE/.test(d)) return 'Amenajare terenuri sportive';
-  if (/AMENAJARE TEREN SPORT|REABILITARE TEREN BASCHET/.test(d)) return 'Amenajare/reabilitare teren de sport';
-  if (/LUCRARI.*INTERVENTIE.*ISU/.test(d)) return 'Lucrări de conformare la normele ISU (securitate la incendiu)';
-  if (/ALIMENTARE CU ENERGIE ELECTRICA.*CENTRU DE ZI|ALIMENTARE.*ELECTRICA.*CENTRU DE ZI/.test(d)) return 'Racordare electrică centru de zi';
+  if (/AMENAJARE TEREN SPORT|REABILITARE TEREN BASCHET/.test(d)) return 'Amenajare si reabilitare teren de sport';
+  if (/LUCRARI.*INTERVENTIE.*ISU/.test(d)) return 'Lucrari de conformare la normele ISU (securitate la incendiu)';
 
   // Industrial
-  if (/EXTINDERE(A)? CAPACITATII.*ROMPAK/.test(d)) return 'Extindere capacitate de producție ROMPAK — hale de producție alimentară';
-  if (/EXTINDEREA ZONEI DE LIVRARE.*FABRICA DE DROJDIE/.test(d)) return 'Extindere zonă de livrare la fabrica de drojdie';
-  if (/CONSTRUIRE HALA.*FARMACEUTICE/.test(d)) return 'Construire hală de producție farmaceutică';
-  if (/ALIMENTARE.*ELECTRICA.*FARMACEUTICE/.test(d)) return 'Racordare electrică hală producție farmaceutică';
-  if (/CONSTRUIRE HALA/.test(d)) return 'Construire hală industrială';
-  if (/CONSTRUIRE SPALATORIE AUTO.*VULCANIZARE/.test(d)) return 'Construire spălătorie auto, vulcanizare și stație ITP';
-  if (/CONSTRUIRE MAGAZIN MATERIALE DE CONSTRUCTII/.test(d)) return 'Construire magazin materiale de construcții cu parcaj';
-  if (/CONSTRUIRE BAZIN IRIGATII/.test(d)) return 'Construire bazin de irigații';
-  if (/REAMENAJARE ANEXA EXPLOATATIE AGRICOLA/.test(d)) return 'Reamenajare anexă exploatație agricolă';
+  if (/EXTINDERE(A)? CAPACITATII.*ROMPAK/.test(d)) return 'Extindere capacitate de productie ROMPAK - hale de productie alimentara';
+  if (/EXTINDEREA ZONEI DE LIVRARE.*FABRICA DE DROJDIE/.test(d)) return 'Extindere zona de livrare la fabrica de drojdie';
+  if (/CONSTRUIRE HALA.*FARMACEUTICE/.test(d)) return 'Construire hala de productie farmaceutica';
+  if (/ALIMENTARE.*ELECTRICA.*FARMACEUTICE/.test(d)) return 'Racordare electrica hala productie farmaceutica';
+  if (/CONSTRUIRE HALA/.test(d)) return 'Construire hala industriala';
+  if (/CONSTRUI(E|RE) SPALATORIE AUTO.*VULCANIZARE|SPALATORIE AUTO.*VULCANIZARE/.test(d)) return 'Construire spalatorie auto, vulcanizare si statie ITP';
+  if (/CONSTRUIRE MAGAZIN MATERIALE DE CONSTRUCTII/.test(d)) return 'Construire magazin materiale de constructii cu parcaj';
+  if (/CONSTRUIRE BAZIN IRIGATII/.test(d)) return 'Construire bazin de irigatii';
+  if (/REAMENAJARE ANEXA EXPLOATATIE AGRICOLA/.test(d)) return 'Reamenajare anexa exploatatie agricola';
 
-  // Publicitate / semnalistică
-  if (/AMPLASARE SEMNALISTICA EXTERIOARA/.test(d)) return 'Amplasare semnalistică exterioară (indicatoare, firme)';
-  if (/AMPLASARE RECLAMA PE FATADA/.test(d)) return 'Amplasare reclamă pe fațada clădirii';
-  if (/MODIFICARE FIRME LUMINOASE/.test(d)) return 'Modificare firme luminoase și reclame exterioare';
-  if (/SCHIMBARE.*MIJLOACE DE PUBLICITATE/.test(d)) return 'Schimbare elemente de publicitate și semnalistică';
-  if (/CONSTRUIRE PILON PUBLICITAR|AMPLASARE SIGLA.*LUMINOASA/.test(d)) return 'Amplasare panou/siglă publicitară';
-  if (/AMPLASARE.*APARAT.*RECICLAT.*KAUFLAND|RELOCARE.*APARATE DE RECICLARE.*KAUFLAND/.test(d)) return 'Amplasare/relocare aparate automate de reciclare Kaufland';
+  // Publicitate / semnalistica
+  if (/AMPLASARE SEMNALISTICA EXTERIOARA/.test(d)) return 'Amplasare semnalistica exterioara (indicatoare, firme)';
+  if (/AMPLASARE RECLAMA PE FATADA/.test(d)) return 'Amplasare reclama pe fatada cladirii';
+  if (/MODIFICARE FIRME LUMINOASE/.test(d)) return 'Modificare firme luminoase si reclame exterioare';
+  if (/SCHIMBARE.*MIJLOACE DE PUBLICITATE/.test(d)) return 'Schimbare elemente de publicitate si semnalistica';
+  if (/CONSTRUIRE PILON PUBLICITAR|AMPLASARE SIGLA.*LUMINOASA/.test(d)) return 'Amplasare panou sau sigla publicitara';
+  if (/AMPLASARE.*APARAT.*RECICLAT.*KAUFLAND|RELOCARE.*APARATE DE RECICLARE.*KAUFLAND/.test(d)) return 'Amplasare sau relocare aparate automate de reciclare Kaufland';
 
-  // Comercial / spații
-  if (/EXTINDERE SI MODERNIZARE CENTRU COMERCIAL/.test(d)) return 'Extindere și modernizare centru comercial';
-  if (/RECOMPARTIMENTARE SPATIU COMERCIAL.*CREARE ACCESE/.test(d)) return 'Recompartimentare spațiu comercial și creare accese';
-  if (/AMENAJARE.*SCHIMB DESTINATIE.*SPATIU COM/.test(d)) return 'Amenajare și schimbare destinație spațiu comercial';
-  if (/RENOVARE.*REAMENAJARE.*SPATIU COMERCIAL/.test(d)) return 'Renovare și reamenajare spațiu comercial';
-  if (/MODIFICARE SPATII COMERCIALE/.test(d)) return 'Modificare configurație spații comerciale';
-  if (/CONSTRUIRE SPATIU COMERCIAL/.test(d)) return 'Construire spațiu comercial nou';
-  if (/SCHIMBARE DESTINATIE.*LOCUINTA.*SPATIU COMERCIAL/.test(d)) return 'Schimbare destinație din locuință în spațiu comercial';
-  if (/SCHIMBARE DESTINATIE.*ANEXE.*ATELIERE|SCHIMBARE DESTINATIE.*SERVICE AUTO/.test(d)) return 'Schimbare destinație anexe în atelier mecanic (service auto)';
-  if (/SCHIMBARE DESTINATIE.*LOCUINTA.*SPATIU MEDICAL/.test(d)) return 'Schimbare destinație din locuință în cabinet medical';
-  if (/SCHIMBARE DESTINATIE/.test(d)) return 'Schimbare destinație a unui spațiu';
-  if (/DESFIINTARE.*DROGHERIE/.test(d)) return 'Desființare drogherie';
-  if (/INLOCUIRE.*CONTAINER.*BUFET/.test(d)) return 'Înlocuire container bufet';
-  if (/CONTINUARE LUCRARI.*BIROURI.*LIFT/.test(d)) return 'Finalizare lucrări clădire birouri cu instalare lift';
+  // Comercial / spatii
+  if (/EXTINDERE SI MODERNIZARE CENTRU COMERCIAL/.test(d)) return 'Extindere si modernizare centru comercial';
+  if (/RECOMPARTIMENTARE SPATIU COMERCIAL.*CREARE ACCESE/.test(d)) return 'Recompartimentare spatiu comercial si creare accese';
+  if (/AMENAJARE.*SCHIMB DESTINATIE.*SPATIU COM/.test(d)) return 'Amenajare si schimbare destinatie spatiu comercial';
+  if (/RENOVARE.*REAMENAJARE.*SPATIU COMERCIAL/.test(d)) return 'Renovare si reamenajare spatiu comercial';
+  if (/MODIFICARE SPATII COMERCIALE/.test(d)) return 'Modificare configuratie spatii comerciale';
+  if (/CONSTRUIRE SPATIU COMERCIAL/.test(d)) return 'Construire spatiu comercial nou';
+  if (/SCHIMBARE DESTINATIE.*LOCUINTA.*SPATIU COMERCIAL/.test(d)) return 'Schimbare destinatie din locuinta in spatiu comercial';
+  if (/SCHIMBARE DESTINATIE.*ANEXE.*ATELIERE|SCHIMBARE DESTINATIE.*SERVICE AUTO/.test(d)) return 'Schimbare destinatie anexe in atelier mecanic (service auto)';
+  if (/SCHIMBARE DESTINATIE.*LOCUINTA.*SPATIU MEDICAL/.test(d)) return 'Schimbare destinatie din locuinta in cabinet medical';
+  if (/SCHIMBARE DESTINATIE/.test(d)) return 'Schimbare destinatie a unui spatiu';
+  if (/DESFIINTARE.*DROGHERIE/.test(d)) return 'Desfiintare drogherie';
+  if (/INLOCUIRE.*CONTAI?NAR.*BUFET/.test(d)) return 'Inlocuire container bufet';
+  if (/CONTINUARE LUCRARI.*BIROURI.*LIFT/.test(d)) return 'Finalizare lucrari cladire birouri cu instalare lift';
   if (/AMENAJARE PARCARE.*LABORATOR/.test(d)) return 'Amenajare parcare pentru laboratorul de analize medicale';
-  if (/EXTINDERE PARCARE/.test(d)) return 'Extindere parcare, alei auto și pietonale';
-  if (/LUCRARI DE COEXISTENTA RETELE.*GALERIE COMERCIALA/.test(d)) return 'Lucrări de coexistență rețele subterane cu galeria comercială și parcarea';
+  if (/EXTINDERE PARCARE/.test(d)) return 'Extindere parcare, alei auto si pietonale';
+  if (/LUCRARI DE COEXISTENTA RETELE.*GALERIE COMERCIALA/.test(d)) return 'Lucrari de coexistenta retele subterane cu galeria comerciala si parcarea';
 
-  // Rezidențial
-  if (/CONSTRUIRE LOCUINTE COLECTIVE.*SPATII COMERCIALE.*SPATII TEHNICE/.test(d) || /CONSTRUIRE LOCUINTE COLECTIVE.*SPATII COMERCIALE/.test(d)) return 'Construire bloc de locuințe cu spații comerciale la parter';
-  if (/CONSTR.*LOCUINTE COLECTIVE.*BIROURI.*SPATII COMERCIALE/.test(d)) return 'Construire ansamblu rezidențial cu birouri și spații comerciale';
-  if (/CONSTRUIRE LOCUINTE COLECTIVE, BIROURI/.test(d)) return 'Construire ansamblu rezidențial cu birouri și spații comerciale';
-  if (/CONSTRUIRE LOCUINTE COLECTIVE MEDII/.test(d)) return 'Construire bloc de locuințe colective';
-  if (/CONSTRUIRE LOCUINTE COLECTIVE/.test(d)) return 'Construire bloc de locuințe colective';
-  if (/DEMOLARE TOTALA.*AMPLASARE STATIE/.test(d)) return 'Demolare construcții existente și amenajare stație';
-  if (/DEMOLARE TOTALA/.test(d)) return 'Demolare totală construcție existentă';
-  if (/DEMOLARE.*CONSTRUIRE LOCUINTA|DEMOLARE C[0-9].*CONSTRUCTIE LOCUINTA/.test(d)) return 'Demolare construcție veche și edificare locuință nouă';
-  if (/DESFIINTARE CONSTR.*CONSTRUIRE LOCUINTE MEDII/.test(d)) return 'Demolare construcții existente și construire bloc de locuințe';
-  if (/SUPRAETAJAREA CLADIRII.*UN NIVEL/.test(d)) return 'Supraetajare clădire existentă cu un nivel suplimentar';
-  if (/SUPRAETAJAREA CLADIRII/.test(d)) return 'Supraetajare clădire existentă';
-  if (/CONSTR.*CASA.*TIP FAMILIAL/.test(d)) return 'Construire casă de tip familial';
-  if (/CONSTR\.? (CASA|LOCUINTA) DE TIP FAMILIAL/.test(d)) return 'Construire locuință tip familial';
-  if (/CONSTR.*LOC.*INDIVIDU/.test(d)) return 'Construire locuință individuală';
-  if (/CONSTRUIRE ACOPERIS TIP SARPANTA/.test(d)) return 'Construire acoperiș tip șarpantă deasupra unui apartament';
-  if (/INCHIDERE BALCON/.test(d)) return 'Închidere balcon cu geam termopan';
-  if (/RECOMPARTIMENTARE AP(ARTAMENT)?\.? NR/.test(d)) return 'Recompartimentare interioară apartament';
-  if (/RECOMPARTIMENTARI SI SCHIMBARE DE DESTINATIE.*MODIFICARE SARPANTA/.test(d)) return 'Recompartimentare, schimbare destinație și modificare șarpantă clădiri';
-  if (/RECOMPARTIMENTARI INTERIOARE FARA AFECTAREA STRUCTURII/.test(d)) return 'Recompartimentare interioară fără afectarea structurii de rezistență';
-  if (/RECOMPARTIMENTARE/.test(d)) return 'Recompartimentare spații interioare';
-  if (/CONSTRUCTIE ANEXA GOSPODAREASCA.*GARAJ/.test(d)) return 'Construire garaj și spațiu de depozitare';
-  if (/MODIFICARE ACOPERIS.*MODERNIZARE MAGAZIE/.test(d)) return 'Modificare acoperiș și modernizare magazie';
+  // Rezidential
+  if (/CONSTRUIRE LOCUINTE COLECTIVE.*SPATII COMERCIALE.*SPATII TEHNICE/.test(d)) return 'Construire bloc de locuinte cu spatii comerciale la parter';
+  if (/CONSTR.*LOCUINTE COLECTIVE.*BIROURI.*SPATII COMERCIALE/.test(d)) return 'Construire ansamblu rezidential cu birouri si spatii comerciale';
+  if (/CONSTRUIRE LOCUINTE COLECTIVE, BIROURI/.test(d)) return 'Construire ansamblu rezidential cu birouri si spatii comerciale';
+  if (/CONSTRUIRE LOCUINTE COLECTIVE MEDII/.test(d)) return 'Construire bloc de locuinte colective';
+  if (/CONSTRUIRE LOCUINTE COLECTIVE/.test(d)) return 'Construire bloc de locuinte colective';
+  if (/DEMOLARE TOTALA.*AMPLASARE STATIE/.test(d)) return 'Demolare constructii existente si amenajare statie';
+  if (/DEMOLARE TOTALA/.test(d)) return 'Demolare totala constructie existenta';
+  if (/DEMOLARE.*CONSTRUIRE LOCUINTA|DEMOLARE C[0-9].*CONSTRUCTIE LOCUINTA/.test(d)) return 'Demolare constructie veche si edificare locuinta noua';
+  if (/DESFIINTARE CONSTR.*CONSTRUIRE LOCUINTE MEDII/.test(d)) return 'Demolare constructii existente si construire bloc de locuinte';
+  if (/SUPRAETAJAREA CLADIRII.*UN NIVEL/.test(d)) return 'Supraetajare cladire existenta cu un nivel suplimentar';
+  if (/SUPRAETAJAREA CLADIRII/.test(d)) return 'Supraetajare cladire existenta';
+  if (/CONSTR.*CASA.*TIP FAMILIAL/.test(d)) return 'Construire casa de tip familial';
+  if (/CONSTR.*LOC.*INDIVIDU/.test(d)) return 'Construire locuinta individuala';
+  if (/CONSTRUIRE ACOPERIS TIP SARPANTA/.test(d)) return 'Construire acoperis tip sarpanta deasupra unui apartament';
+  if (/INCHIDERE BALCON/.test(d)) return 'Inchidere balcon cu geam termopan';
+  if (/RECOMPARTIMENTARE AP(ARTAMENT)?\.? NR/.test(d)) return 'Recompartimentare interioara apartament';
+  if (/RECOMPARTIMENTARI SI SCHIMBARE DE DESTINATIE.*MODIFICARE SARPANTA/.test(d)) return 'Recompartimentare, schimbare destinatie si modificare sarpanta cladiri';
+  if (/RECOMPARTIMENTARI INTERIOARE FARA AFECTAREA STRUCTURII/.test(d)) return 'Recompartimentare interioara fara afectarea structurii de rezistenta';
+  if (/RECOMPARTIMENTARE/.test(d)) return 'Recompartimentare spatii interioare';
+  if (/CONSTRUCTIE ANEXA GOSPODAREASCA.*GARAJ/.test(d)) return 'Construire garaj si spatiu de depozitare';
+  if (/MODIFICARE ACOPERIS.*MODERNIZARE MAGAZIE/.test(d)) return 'Modificare acoperis si modernizare magazie';
   if (/CONSTRUIRE MAGAZIE DEPOZITARE/.test(d)) return 'Construire magazie pentru depozitare piese';
-  if (/DESFIINTARE MAGAZIE.*CONSTRUIRE MAGAZIE/.test(d)) return 'Demolare și reconstruire magazie';
+  if (/DESFIINTARE MAGAZIE.*CONSTRUIRE MAGAZIE/.test(d)) return 'Demolare si reconstruire magazie';
+  if (/EXTINDERE PE VERTICALA/.test(d)) return 'Extindere pe verticala a constructiei existente';
+  if (/MODIFICARE.*EXTINDERE.*MANSARDA/.test(d)) return 'Extindere si modificare mansarda';
+  if (/CONSTRUCTIE ANEXA/.test(d)) return 'Construire anexa gospodareasca';
 
-  // Reabilitare generală
-  if (/REABILITARE.*MODERNIZARE.*AMPLASARE CABINA PAZA/.test(d)) return 'Reabilitare, modernizare și cabină de pază';
-  if (/REABILITARE.*MODERNIZARE.*EXTINDERE.*DOTARE/.test(d)) return 'Reabilitare, modernizare, extindere și dotare';
+  // Reabilitare generala
+  if (/REABILITARE.*MODERNIZARE.*AMPLASARE CABINA PAZA/.test(d)) return 'Reabilitare, modernizare si amplasare cabina de paza';
+  if (/REABILITARE.*MODERNIZARE.*EXTINDERE.*DOTARE/.test(d)) return 'Reabilitare, modernizare, extindere si dotare';
   if (/REABILITARE TEREN BASCHET/.test(d)) return 'Reabilitare teren de baschet';
-  if (/REAMENAJARE/.test(d)) return 'Reamenajare';
-  if (/MODIFICARE LUCRARI IN CURS/.test(d)) return 'Modificare lucrări autorizate anterior în curs de execuție';
+  if (/REAMENAJARE/.test(d)) return 'Reamenajare spatiu sau incinta';
+  if (/MODIFICARE LUCRARI IN CURS/.test(d)) return 'Modificare lucrari autorizate anterior in curs de executie';
 
-  // Extindere pe verticală / orizontală
-  if (/EXTINDERE PE VERTICALA/.test(d)) return 'Extindere pe verticală a construcției existente';
-  if (/MODIFICARE.*EXTINDERE.*MANSARDA/.test(d)) return 'Extindere și modificare mansardă';
-
-  // Fallback curat
-  const clean = ds.trim()
-    .replace(/\s+/g, ' ')
-    .replace(/\b(PRM|PRS|BRS|B SI R|I, B\+R|I,B\+R|B\+R|TRONS|TRONSON|MUN\.|JUD\.)\b/gi, '')
-    .replace(/\s+/g, ' ').trim();
-  return clean.charAt(0).toUpperCase() + clean.slice(1).toLowerCase();
+  // Fallback curat - pastreaza textul original dar curata
+  const clean = ds.trim().replace(/\s+/g, ' ');
+  return clean.charAt(0).toUpperCase() + clean.slice(1).toLowerCase()
+    .replace(/["]/g, '');  // remove any double quotes as safety net
 }
 
 const html = fs.readFileSync('www/index.html', 'utf8');
-
-// Find the AC array and replace ds values
 let count = 0;
-const updated = html.replace(/"ds":"([^"]*)"/g, (match, ds) => {
+
+// ds is always followed by ,"ad": - use that as safe boundary
+const updated = html.replace(/"ds":"(.*?)","ad":/g, (match, ds) => {
   const newDs = humanize(ds);
-  if (newDs !== ds) count++;
-  return `"ds":"${newDs}"`;
+  // Safety: remove any ASCII double quotes that would break the JS string
+  const safeDs = newDs.replace(/"/g, '');
+  if (safeDs !== ds) count++;
+  return `"ds":"${safeDs}","ad":`;
 });
 
 fs.writeFileSync('www/index.html', updated, 'utf8');
-console.log(`Done — updated ${count} descriptions out of 290`);
+console.log(`Done - updated ${count}/290 descriptions`);
+
+// Verify
+const html2 = fs.readFileSync('www/index.html', 'utf8');
+const acStart = html2.indexOf('const AC=[');
+const acEnd = html2.indexOf('];', acStart) + 2;
+try {
+  eval('var AC=' + html2.slice(acStart + 'const AC='.length, acEnd));
+  console.log('AC parses OK, entries:', AC.length);
+} catch(e) {
+  console.log('AC PARSE ERROR:', e.message);
+}
