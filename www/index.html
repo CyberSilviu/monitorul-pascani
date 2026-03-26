@@ -35,7 +35,8 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--tx);heigh
 .fs{padding:8px 14px;border-bottom:1px solid var(--bd);display:flex;flex-wrap:wrap;gap:5px}
 .ch{padding:4px 9px;border-radius:16px;font-size:10px;font-weight:600;cursor:pointer;border:1.5px solid var(--bd);background:var(--cd);color:var(--tm);transition:.2s;display:flex;align-items:center;gap:3px;user-select:none}
 .ch.on{border-color:var(--ac);background:var(--al);color:var(--ac)}.ch .cn{font-size:9px;opacity:.7}
-.fsa{display:flex;gap:5px;padding:6px 14px 0;}.fsa button{font-size:10px;font-weight:600;font-family:inherit;cursor:pointer;border:1.5px solid var(--bd);border-radius:12px;padding:3px 9px;background:var(--cd);color:var(--tm);transition:.2s}.fsa button:hover{border-color:var(--ac);color:var(--ac)}
+.fsa{display:flex;gap:5px;padding:6px 14px 0;}
+.abr{padding:5px 14px 6px;font-size:9px;color:var(--tm);border-bottom:1px solid var(--bd)}.fsa button{font-size:10px;font-weight:600;font-family:inherit;cursor:pointer;border:1.5px solid var(--bd);border-radius:12px;padding:3px 9px;background:var(--cd);color:var(--tm);transition:.2s}.fsa button:hover{border-color:var(--ac);color:var(--ac)}
 .ls{padding:8px 14px;border-bottom:1px solid var(--bd)}.ls h4{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--tm);margin-bottom:5px}
 .lb{display:flex;align-items:center;gap:7px;width:100%;padding:7px 10px;border-radius:8px;border:1.5px solid var(--bd);background:var(--cd);color:var(--tx);font-family:inherit;font-size:11px;font-weight:600;cursor:pointer;transition:.2s;text-align:left;margin-bottom:4px}
 .lb:hover{background:var(--bg)}.lb.on{border-color:var(--ac);background:var(--al);color:var(--ac)}
@@ -129,6 +130,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--tx);heigh
 <div class="srch"><div class="sw"><span>&#128269;</span><input type="text" placeholder="Cauta locatie, investitie, strada..." id="sI" oninput="doRender()"></div></div>
 <div class="fsa"><button onclick="selAll()">✓ Toate</button><button onclick="deselAll()">✕ Niciunul</button></div>
 <div class="fs" id="fl"></div>
+<div class="abr">💡 <b>K</b> = mii RON &nbsp;·&nbsp; <b>M</b> = milioane RON &nbsp;·&nbsp; <b>RON</b> = lei românești</div>
 <div class="ls"><h4>Straturi harta</h4>
 <button class="lb on" id="bB" onclick="togB()"><span class="dot" style="background:#2563eb"></span>&#128205; Locatii<span class="sub" id="bBs">0</span></button>
 <button class="lb" id="bI" onclick="togI()"><span class="dot" style="background:#16a34a"></span>&#128176; Investitii publice<span class="sub" id="bIs">Click pt activare</span></button>
