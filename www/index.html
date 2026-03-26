@@ -596,7 +596,7 @@ function openWv(url){document.getElementById('wvFrame').src=url;document.getElem
 function closeWv(){document.getElementById('wvOverlay').style.display='none';document.getElementById('wvFrame').src='';}
 </script>
 <div id="wvOverlay" style="display:none;position:fixed;inset:0;z-index:3000;background:#fff;flex-direction:column">
-  <div style="display:flex;align-items:center;gap:10px;padding:10px 14px;border-bottom:1px solid #e2e8f0;background:#fff;flex-shrink:0">
+  <div style="display:flex;align-items:center;gap:10px;padding:calc(10px + env(safe-area-inset-top,0px)) 14px 10px;border-bottom:1px solid #e2e8f0;background:#fff;flex-shrink:0">
     <button onclick="closeWv()" style="display:flex;align-items:center;gap:5px;padding:6px 12px;background:#f1f5f9;border:1px solid #e2e8f0;border-radius:16px;font-family:inherit;font-size:12px;font-weight:600;color:#1e293b;cursor:pointer">← Înapoi</button>
   </div>
   <iframe id="wvFrame" src="" style="flex:1;border:none;width:100%;height:100%"></iframe>
