@@ -911,7 +911,7 @@ function renderCategories(tax) {
       <div class="cat-row-bottom">
         <div class="cat-amount">${fmt(amount)} lei</div>
         <div class="cat-percent-wrap">
-          <span class="cat-pct-fixed">${cat.pct}%</span>
+          <span class="cat-pct-fixed">${String(cat.pct).replace('.',',')}%</span>
         </div>
       </div>
     `;
