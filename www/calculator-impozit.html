@@ -919,16 +919,7 @@ function renderCategories(tax) {
   });
 }
 
-function updateTotalBar() {
-  const total = categories.reduce((s, c) => s + c.pct, 0);
-  const bar = $('totalBar');
-  $('totalPercent').textContent = total + '%';
-
-  bar.classList.remove('ok', 'warn', 'error');
-  if (total === 100) bar.classList.add('ok');
-  else if (Math.abs(total - 100) <= 5) bar.classList.add('warn');
-  else bar.classList.add('error');
-}
+function updateTotalBar() {}
 
 // Tooltip
 function showTooltip(e, name, amount, pct) {
@@ -956,11 +947,6 @@ $('cumulBtn').addEventListener('click', () => {
 });
 
 // Reset
-$('resetBtn').addEventListener('click', () => {
-  categories = JSON.parse(JSON.stringify(DEFAULT_CATEGORIES));
-  renderCategories(getLocalBudget());
-  calculate();
-});
 
 // Salary input formatting
 $('salaryInput').addEventListener('input', (e) => {
