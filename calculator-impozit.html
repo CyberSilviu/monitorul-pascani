@@ -423,6 +423,14 @@
     border-color: var(--accent);
   }
 
+  .cat-pct-fixed {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--accent);
+    min-width: 48px;
+    text-align: right;
+  }
+
   .cat-percent-sign {
     font-size: 13px;
     color: var(--text-dim);
@@ -720,24 +728,18 @@
           <!-- injected by JS -->
         </div>
 
-        <div class="total-bar ok" id="totalBar">
-          <span>Total alocat</span>
-          <span id="totalPercent">100%</span>
-        </div>
-
-        <button class="reset-btn" id="resetBtn">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M3 21v-5h5"/></svg>
-          Resetează procentele
-        </button>
       </div>
     </div>
   </div>
 
   <p class="info-note">
     Calculul folosește cotele următoare: CAS 25%, CASS 10%, impozit pe venit 10%.<br>
-    Din impozitul pe venit: 65% → Primăria Pașcani, 15% → Consiliul Județean Iași, 20% → Repartizare bugete locale.<br>
-    Distribuția pe categorii este orientativă. Modifică procentele pentru a explora scenarii alternative.
+    Din impozitul pe venit: 65% → Primăria Pașcani, 15% → Consiliul Județean Iași, 20% → Repartizare bugete locale.
   </p>
+  <div style="margin-top:24px;padding:16px 20px;background:#f8f9fb;border-radius:12px;border:1px solid #E0E2E9;display:flex;flex-direction:column;gap:10px">
+    <p style="font-size:12px;color:#6B7084;line-height:1.6">⚠️ <em>Repartizarea pe capitole de cheltuieli nu are ca referință bugetul integral al municipiului, ci doar bugetul din impozitul pe venit.</em></p>
+    <p style="font-size:11px;color:#9CA3AF">📄 Sursa: Bugetul de venituri și cheltuieli Municipiul Pașcani 2025</p>
+  </div>
 </div>
 
 <!-- Tooltip -->
@@ -909,28 +911,11 @@ function renderCategories(tax) {
       <div class="cat-row-bottom">
         <div class="cat-amount">${fmt(amount)} lei</div>
         <div class="cat-percent-wrap">
-          <input class="cat-percent-input" type="number" min="0" max="100" step="1" value="${cat.pct}" data-idx="${i}">
-          <span class="cat-percent-sign">%</span>
+          <span class="cat-pct-fixed">${cat.pct}%</span>
         </div>
       </div>
     `;
     list.appendChild(div);
-  });
-
-  list.querySelectorAll('.cat-percent-input').forEach(inp => {
-    inp.addEventListener('input', (e) => {
-      const idx = parseInt(e.target.dataset.idx);
-      let val = parseFloat(e.target.value);
-      if (isNaN(val) || val < 0) val = 0;
-      if (val > 100) val = 100;
-      categories[idx].pct = val;
-      const tax = getLocalBudget();
-      renderChart(tax);
-      updateCategoryAmounts(tax);
-      updateTotalBar();
-    });
-
-    inp.addEventListener('focus', (e) => e.target.select());
   });
 }
 
